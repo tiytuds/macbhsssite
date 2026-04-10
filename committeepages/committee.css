@@ -171,6 +171,7 @@ footer { background: var(--dark); color: rgba(255,255,255,0.55); padding: 48px 6
   .nav-links, .nav-resources { display: none; }
   .hamburger { display: flex; }
   .comm-hero { height: 200px; }
+  .comm-hero img { object-position: left top; }
   .comm-info { padding: 28px 20px; }
   .comm-info-left h1 { font-size: 1.8rem; }
   #membersGrid { grid-template-columns: repeat(2, 1fr); }
