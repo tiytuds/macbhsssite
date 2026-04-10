@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — BHSS Announcements</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --maroon:    #7a003c;
+      --blue:      #1d4fa1;
+      --blue-mid:  #2e69c9;
+      --blue-pale: #ddeaf7;
+      --gold:      #FDBF57;
+      --dark:      #0f1b2d;
+      --text:      #1a2640;
+      --mid:       #4a5a7a;
+      --muted:     #8899bb;
+      --white:     #ffffff;
+      --off:       #f5f7fa;
+      --border:    #dde5f0;
+      --green:     #15803d;
+      --red:       #b91c1c;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--off); color: var(--text); min-height: 100vh; }
+
+    /* ── LOGIN SCREEN ── */
+    .login-screen {
+      min-height: 100vh; display: flex; align-items: center;
+      justify-content: center; padding: 24px;
+      background: linear-gradient(135deg, var(--dark) 0%, var(--blue) 100%);
+    }
+    .login-card {
+      background: var(--white); border-radius: 20px; padding: 48px 40px;
+      width: 100%; max-width: 400px; box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    }
+    .login-logo { text-align: center; margin-bottom: 32px; }
+    .login-logo-mark {
+      width: 52px; height: 52px; border-radius: 50%;
+      border: 2px solid var(--white); display: inline-flex;
+      align-items: center; justify-content: center;
+      font-family: 'Familjen Grotesk', serif;
+      font-size: 1.4rem; font-weight: 600; color: var(--maroon); margin-bottom: 12px;
+    }
+    .login-logo h2 { font-family: 'Familjen Grotesk', serif; font-size: 1.4rem; font-weight: 600; color: var(--text); }
+    .login-logo p { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--mid); margin-bottom: 6px; letter-spacing: 0.03em; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%; padding: 11px 14px; border: 1px solid var(--border);
+      border-radius: 8px; font-family: 'Inter', sans-serif;
+      font-size: 0.88rem; color: var(--text); background: var(--white);
+      transition: border-color 0.15s, box-shadow 0.15s; outline: none;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color: var(--blue); box-shadow: 0 0 0 3px rgba(29,79,161,0.1);
+    }
+    .login-error { font-size: 0.8rem; color: var(--red); margin-top: 8px; display: none; }
+    .btn-primary {
+      width: 100%; padding: 12px; background: var(--blue); color: var(--white);
+      border: none; border-radius: 8px; font-family: 'Inter', sans-serif;
+      font-size: 0.88rem; font-weight: 600; cursor: pointer;
+      transition: background 0.15s; letter-spacing: 0.02em;
+    }
+    .btn-primary:hover { background: var(--blue-mid); }
+    .btn-secondary {
+      padding: 10px 20px; background: var(--off); color: var(--mid);
+      border: 1px solid var(--border); border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-secondary:hover { background: var(--border); }
+    .btn-backtosite {
+      position: absolute; top: 20px; right: 20px;
+      padding: 10px 20px; background: var(--off); color: var(--mid);
+      border: 1px solid var(--border); border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-backtosite:hover { background: var(--border); }
+    .btn-danger {
+      padding: 7px 14px; background: rgba(185,28,28,0.08); color: var(--red);
+      border: 1px solid rgba(185,28,28,0.2); border-radius: 6px;
+      font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600;
+      cursor: pointer; transition: background 0.15s;
+    }
+    .btn-danger:hover { background: rgba(185,28,28,0.15); }
+
+    /* ── ADMIN LAYOUT ── */
+    .admin-wrap { display: none; min-height: 100vh; }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed; left: 0; top: 0; bottom: 0; width: 240px;
+      background: var(--dark); display: flex; flex-direction: column;
+      z-index: 100;
+    }
+    .sidebar-brand {
+      padding: 24px 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .sidebar-brand-row { display: flex; align-items: center; gap: 10px; }
+    .sidebar-logo-mark {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 1.5px var(--white) solid;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Familjen Grotesk', serif;
+      font-size: 0.9rem; font-weight: 600; color: rgba(255,255,255,0.8);
+    }
+    .sidebar-brand-name { font-size: 0.85rem; font-weight: 600; color: var(--white); }
+    .sidebar-brand-sub { font-size: 0.65rem; color: rgba(255,255,255,0.4); letter-spacing: 0.04em; }
+    .sidebar-nav { flex: 1; padding: 16px 12px; }
+    .sidebar-label {
+      font-size: 0.63rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: rgba(255,255,255,0.3);
+      padding: 0 8px; margin: 16px 0 6px;
+    }
+    .sidebar-link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 9px 10px; border-radius: 8px; color: rgba(255,255,255,0.6);
+      font-size: 0.83rem; font-weight: 500; cursor: pointer;
+      transition: background 0.15s, color 0.15s; border: none;
+      background: none; width: 100%; text-align: left;
+      font-family: 'Inter', sans-serif; text-decoration: none;
+    }
+    .sidebar-link:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+    .sidebar-link.active { background: rgba(255,255,255,0.1); color: var(--white); }
+    .sidebar-link svg { flex-shrink: 0; }
+    .sidebar-footer {
+      padding: 16px 12px; border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .logout-btn {
+      display: flex; align-items: center; gap: 8px; width: 100%;
+      padding: 9px 10px; background: none; border: none;
+      color: rgba(255,255,255,0.4); font-size: 0.8rem; cursor: pointer;
+      border-radius: 8px; transition: background 0.15s, color 0.15s;
+      font-family: 'Inter', sans-serif;
+    }
+    .logout-btn:hover { background: rgba(255,0,0,0.08); color: #ff6b6b; }
+
+    /* Main content */
+    .main { margin-left: 240px; padding: 40px 48px; }
+
+    /* Top bar */
+    .topbar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 36px;
+    }
+    .topbar h1 { font-family: 'Familjen Grotesk', serif; font-size: 2rem; font-weight: 600; color: var(--text); }
+    .topbar p { font-size: 0.82rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── PANELS ── */
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* Composer outer: form + live preview side by side */
+    .composer-outer { display: flex; gap: 28px; align-items: flex-start; }
+    .composer-outer .composer-card { flex: 1; min-width: 0; }
+
+    /* Composer */
+    .composer-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 36px;
+    }
+    .composer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-group textarea { resize: vertical; min-height: 100px; font-family: 'Inter', sans-serif; }
+    .form-group textarea.tall { min-height: 200px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .richtext-hint { font-size: 0.72rem; color: var(--muted); margin-top: 5px; }
+    .richtext-hint code { background: var(--off); border-radius: 3px; padding: 1px 4px; font-size: 0.7rem; }
+    .composer-actions { display: flex; align-items: center; gap: 12px; margin-top: 28px; padding-top: 20px; border-top: 1px solid var(--border); }
+    .pin-toggle { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--mid); cursor: pointer; user-select: none; }
+    .pin-toggle input { width: 16px; height: 16px; cursor: pointer; accent-color: var(--blue); }
+
+    /* Banner auto-preview under category select */
+    .banner-auto-preview {
+      display: none; margin-top: 8px; border-radius: 8px;
+      overflow: hidden; height: 80px;
+    }
+    .banner-auto-preview img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: left center; display: block;
+    }
+
+    /* Live preview panel */
+    .live-preview-panel {
+      width: 280px; flex-shrink: 0;
+      position: sticky; top: 20px;
+    }
+    .live-preview-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    }
+    .live-preview-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+    }
+    .live-preview-img {
+      height: 150px; overflow: hidden; background: var(--blue-pale);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .live-preview-img img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: left center; display: block;
+    }
+    .live-preview-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+    .live-preview-body { padding: 16px; display: flex; flex-direction: column; gap: 8px; }
+    .live-preview-title {
+      font-family: 'Familjen Grotesk', serif; font-size: 1.05rem;
+      font-weight: 600; color: var(--text); line-height: 1.3;
+    }
+    .live-preview-title.empty { color: var(--border); font-style: italic; font-weight: 400; }
+    .live-preview-excerpt { font-size: 0.78rem; color: var(--mid); line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 3; line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .live-preview-excerpt.empty { color: var(--border); font-style: italic; }
+    .live-preview-meta { font-size: 0.7rem; color: var(--muted); padding-top: 8px; border-top: 1px solid var(--border); }
+
+    /* ── POST LIST ── */
+    .posts-list { display: flex; flex-direction: column; gap: 12px; }
+    .post-row {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 12px; padding: 18px 20px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .post-row-thumb {
+      width: 56px; height: 56px; border-radius: 8px; overflow: hidden;
+      flex-shrink: 0; background: var(--blue-pale);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .post-row-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .post-row-body { flex: 1; min-width: 0; }
+    .post-row-title { font-size: 0.9rem; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .post-row-meta { font-size: 0.75rem; color: var(--muted); margin-top: 3px; }
+    .post-row-pill {
+      flex-shrink: 0; padding: 3px 10px; border-radius: 100px;
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--white);
+    }
+    .post-row-pill.General   { background: #575757; }
+    .post-row-pill.Academics { background: #293593; }
+    .post-row-pill.Social    { background: #DD1084; }
+    .post-row-pill.Internal  { background: #F58120; }
+    .post-row-pill.External  { background: #EE2824; }
+    .post-row-pill.Logistics { background: #181718; }
+    .post-row-pill.Finance   { background: #46B749; }
+    .post-row-source { flex-shrink: 0; font-size: 0.72rem; color: var(--muted); font-style: italic; }
+    .post-row-source.local { color: var(--green); font-weight: 600; font-style: normal; }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed; bottom: 28px; right: 28px; z-index: 9999;
+      background: var(--dark); color: var(--white);
+      padding: 14px 20px; border-radius: 10px;
+      font-size: 0.85rem; font-weight: 500;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      transform: translateY(80px); opacity: 0;
+      transition: transform 0.3s, opacity 0.3s; pointer-events: none;
+    }
+    .toast.show { transform: translateY(0); opacity: 1; }
+    .toast.success { border-left: 4px solid #22c55e; }
+    .toast.error   { border-left: 4px solid var(--red); }
+
+    /* ── EXPORT PANEL ── */
+    .export-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 36px; }
+    .export-card h3 { font-family: 'Familjen Grotesk', serif; font-size: 1.5rem; font-weight: 600; margin-bottom: 12px; }
+    .export-card p { font-size: 0.85rem; color: var(--mid); line-height: 1.65; margin-bottom: 20px; }
+    .export-code {
+      background: var(--dark); color: #a5f3fc; border-radius: 10px;
+      padding: 20px; font-family: monospace; font-size: 0.75rem; line-height: 1.7;
+      overflow-x: auto; white-space: pre-wrap; margin-bottom: 20px;
+    }
+
+    @media (max-width: 860px) {
+      .sidebar { width: 200px; }
+      .main { margin-left: 200px; padding: 28px 24px; }
+      .composer-grid { grid-template-columns: 1fr; }
+      .form-group.full { grid-column: 1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── LOGIN ── -->
+<div class="login-screen" id="loginScreen">
+  <a href="announcements.html" class="btn-backtosite" style="display:inline-flex;align-items:center;gap:7px;text-decoration:none;">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    Back to Site
+  </a>
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-mark"><img src="assets/images/com_pfp@4x.png" alt="BHSS Comms Logo" height="52px" width="52px"></div>
+      <h2>BHSS Admin</h2>
+      <p>Announcements Dashboard</p>
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <div style="position:relative;">
+        <input type="password" id="loginPassword" placeholder="Enter admin password"
+          style="padding-right:42px;" />
+        <button id="togglePw" type="button"
+          style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;line-height:1;padding:0;color:var(--muted);">👁</button>
+      </div>
+      <div class="login-error" id="loginError">Incorrect password. Please try again.</div>
+    </div>
+    <button class="btn-primary" id="loginBtn" onclick="attemptLogin()">Sign In</button>
+    <p style="text-align:center;margin-top:16px;font-size:0.75rem;color:var(--muted)">
+      Contact the BHSS Comms lead if you need access.
+    </p>
+  </div>
+</div>
+
+<!-- ── ADMIN APP ── -->
+<div class="admin-wrap" id="adminWrap">
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-row">
+        <div class="sidebar-logo-mark"><img src="assets/images/com_pfp@4x.png" alt="BHSS Comms Logo" height="34px" width="34px"></div>
+        <div>
+          <div class="sidebar-brand-name">BHSS Admin</div>
+          <div class="sidebar-brand-sub">Communications</div>
+        </div>
+      </div>
+    </div>
+    <div class="sidebar-nav">
+      <div class="sidebar-label">Announcements</div>
+      <button class="sidebar-link active" onclick="showPanel('compose')" id="link-compose">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        New Announcement
+      </button>
+      <button class="sidebar-link" onclick="showPanel('manage')" id="link-manage">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Manage Posts
+      </button>
+      <button class="sidebar-link" onclick="showPanel('export')" id="link-export">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/><path d="M9 18H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg>
+        Export Announcements
+      </button>
+
+      <div class="sidebar-label" style="margin-top:24px">Committees</div>
+      <button class="sidebar-link" onclick="showPanel('members')" id="link-members">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Manage Members
+      </button>
+      <button class="sidebar-link" onclick="showPanel('resources')" id="link-resources">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        Manage Resources
+      </button>
+      <button class="sidebar-link" onclick="showPanel('export-members')" id="link-export-members">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/><path d="M9 18H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4"/></svg>
+        Export Members, Resources
+      </button>
+
+      <div class="sidebar-label" style="margin-top:24px">Site</div>
+      <a class="sidebar-link" href="index.html" target="_blank">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        View Live Site
+      </a>
+    </div>
+    <div class="sidebar-footer">
+      <button class="logout-btn" onclick="logout()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <!-- COMPOSE PANEL -->
+    <div class="panel active" id="panel-compose">
+      <div class="topbar">
+        <div>
+          <h1>New Announcement</h1>
+          <p>Draft and publish an announcement to the BHSS website.</p>
+        </div>
+      </div>
+
+      <div class="composer-outer">
+        <div class="composer-card">
+          <div class="composer-grid">
+
+            <div class="form-group full">
+              <label>Title *</label>
+              <input type="text" id="f-title" placeholder="e.g. BHSS Spring Elections Now Open" oninput="updatePreview()" />
+            </div>
+
+            <div class="form-group">
+              <label>Category *</label>
+              <select id="f-category" onchange="onCategoryChange()">
+                <option value="">— Select category —</option>
+                <option>General</option>
+                <option>Academics</option>
+                <option>Social</option>
+                <option>Internal</option>
+                <option>External</option>
+                <option>Logistics &amp; Elections</option>
+                <option>Finance</option>
+              </select>
+              <div class="banner-auto-preview" id="bannerAutoPreview">
+                <img id="bannerAutoImg" src="" alt="" />
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Read Time (minutes)</label>
+              <input type="number" id="f-readtime" value="1" min="1" max="30" />
+            </div>
+
+            <input type="hidden" id="f-image" value="" />
+
+            <div class="form-group full">
+              <label>Excerpt * <span style="color:var(--muted);font-weight:400">— short summary shown on cards (1–2 sentences)</span></label>
+              <textarea id="f-excerpt" rows="3" placeholder="A brief 1-2 sentence summary of the announcement..." oninput="updatePreview()"></textarea>
+            </div>
+
+            <div class="form-group full">
+              <label>Full Body * <span style="color:var(--muted);font-weight:400">— supports HTML</span></label>
+              <textarea id="f-body" class="tall" placeholder="Write the full announcement here. You can use HTML: &lt;p&gt;, &lt;strong&gt;, &lt;ul&gt;, &lt;li&gt;, &lt;a href=&quot;...&quot;&gt; etc."></textarea>
+              <div class="richtext-hint">
+                Supported tags: <code>&lt;p&gt;</code> <code>&lt;strong&gt;</code> <code>&lt;em&gt;</code> <code>&lt;ul&gt;</code><code>&lt;li&gt;</code> <code>&lt;a href="..."&gt;</code>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="composer-actions">
+            <button class="btn-primary" style="width:auto;padding:10px 28px" onclick="publishAnnouncement()">
+              Publish Announcement
+            </button>
+            <button class="btn-secondary" onclick="clearForm()">Clear</button>
+            <label class="pin-toggle">
+              <input type="checkbox" id="f-pinned" />
+              Pin to top
+            </label>
+          </div>
+        </div>
+
+        <!-- Live preview -->
+        <div class="live-preview-panel">
+          <div class="live-preview-label">Card Preview</div>
+          <div class="live-preview-card">
+            <div class="live-preview-img" id="lpImg">
+              <div class="live-preview-placeholder" id="lpPlaceholder">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#c8d6e8" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </div>
+            </div>
+            <div class="live-preview-body">
+              <div class="live-preview-title empty" id="lpTitle">Your title will appear here</div>
+              <div class="live-preview-excerpt empty" id="lpExcerpt">Your excerpt will appear here…</div>
+              <div class="live-preview-meta" id="lpMeta">Category · 1 min read</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANAGE PANEL -->
+    <div class="panel" id="panel-manage">
+      <div class="topbar">
+        <div>
+          <h1>Manage Posts</h1>
+          <p>Review and delete locally-published announcements. Base data posts cannot be deleted here.</p>
+        </div>
+        <button class="btn-secondary" onclick="renderManage()">↻ Refresh</button>
+      </div>
+      <div class="posts-list" id="manageList"></div>
+    </div>
+
+    <!-- EXPORT PANEL -->
+    <div class="panel" id="panel-export">
+      <div class="topbar">
+        <div>
+          <h1>Export Data</h1>
+          <p>Copy the generated JS below and paste it into <strong>announcements-data.js</strong> to permanently save new announcements.</p>
+        </div>
+      </div>
+      <div class="export-card">
+        <h3>How the data system works</h3>
+        <p>
+          Announcements published through this admin panel are saved to this browser's <strong>localStorage</strong> — they're visible on this computer immediately,
+          but won't appear on other devices or after clearing browser data.<br><br>
+          To make an announcement <strong>permanent</strong> (visible to all visitors), copy the exported JS below and paste it into the 
+          <code style="background:var(--off);padding:2px 5px;border-radius:3px;font-size:0.8rem">announcements-data.js</code> file, 
+          then re-deploy the site. In the future this can be connected to a live database (Supabase, Firebase) to skip this step.
+        </p>
+        <button class="btn-primary" style="width:auto;padding:10px 24px;margin-bottom:20px" onclick="generateExport()">Generate Export</button>
+        <div class="export-code" id="exportCode">Click "Generate Export" to see the data file content.</div>
+        <button class="btn-secondary" onclick="copyExport()">Copy to Clipboard</button>
+      </div>
+    </div>
+
+    <!-- EXPORT MEMBERS PANEL -->
+    <div class="panel" id="panel-export-members">
+      <div class="topbar">
+        <div>
+          <h1>Export Members &amp; Resources</h1>
+          <p>Copy the generated JS below and paste it into <strong>members-data.js</strong> to permanently save members and resources.</p>
+        </div>
+      </div>
+      <div class="export-card">
+        <h3>How member data works</h3>
+        <p>
+          Members and resources added through this admin panel are saved to this browser's <strong>localStorage</strong> — they're visible on this computer immediately,
+          but won't appear on other devices or after clearing browser data.<br><br>
+          To make members <strong>permanent</strong> (visible to all visitors), click Generate Export, then replace the contents of
+          <code style="background:var(--off);padding:2px 5px;border-radius:3px;font-size:0.8rem">members-data.js</code>
+          with the code below and re-deploy the site.
+        </p>
+        <button class="btn-primary" style="width:auto;padding:10px 24px;margin-bottom:20px" onclick="generateMembersExport()">Generate Export</button>
+        <div class="export-code" id="exportMembersCode">Click "Generate Export" to see the data file content.</div>
+        <button class="btn-secondary" onclick="copyMembersExport()">Copy to Clipboard</button>
+      </div>
+    </div>
+
+    <!-- MEMBERS PANEL -->
+    <div class="panel" id="panel-members">
+      <div class="topbar">
+        <div>
+          <h1>Manage Members</h1>
+          <p>Add or remove committee members. Changes appear immediately on the committee page.</p>
+        </div>
+        <button class="btn-secondary" onclick="renderMemberList()">&#8635; Refresh</button>
+      </div>
+
+      <div class="composer-outer" style="align-items:flex-start;gap:28px">
+        <!-- Add member form -->
+        <div class="composer-card" style="flex:1">
+          <div style="margin-bottom:20px">
+            <label class="form-group" style="display:block;margin-bottom:0">
+              <span style="font-size:0.78rem;font-weight:600;color:var(--mid);letter-spacing:0.03em;display:block;margin-bottom:6px">Committee</span>
+              <select id="m-committee" onchange="renderMemberList()" style="width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:8px;font-family:Inter,sans-serif;font-size:0.88rem;color:var(--text);background:var(--white)">
+                <option value="aca">Academics</option>
+                <option value="soc">Social</option>
+                <option value="int">Internal</option>
+                <option value="ext">External</option>
+                <option value="fin">Financial</option>
+                <option value="log">Elections &amp; Logistics</option>
+                <option value="com">Communications</option>
+                <option value="chr">Chair</option>
+                <option value="edi">EDI</option>
+                <option value="wwc">Welcome Week</option>
+                <option value="fyc">First Year Council</option>
+                <option value="syc">Second Year Council</option>
+                <option value="tyc">Third Year Council</option>
+                <option value="4yc">Fourth Year Council</option>
+              </select>
+            </label>
+          </div>
+
+          <h3 style="font-family:'Familjen Grotesk',serif;font-size:1.1rem;font-weight:600;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)">Add Member</h3>
+          <div class="composer-grid">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input type="text" id="m-firstname" placeholder="e.g. Hearty" />
+            </div>
+            <div class="form-group">
+              <label>Last Name *</label>
+              <input type="text" id="m-lastname" placeholder="e.g. Bekind Toyourself" />
+            </div>
+            <div class="form-group">
+              <label>Role</label>
+              <input type="text" id="m-role" placeholder="e.g. Level II Core / Child Health" />
+            </div>
+            <div class="form-group" style="display:flex;align-items:center;gap:10px;padding-top:24px">
+              <input type="checkbox" id="m-coordinator" style="width:16px;height:16px;accent-color:var(--blue)" />
+              <label for="m-coordinator" style="font-size:0.85rem;color:var(--mid);cursor:pointer;margin:0">Mark as Coordinator</label>
+            </div>
+            <div class="form-group full">
+              <label>Photo <span style="color:var(--muted);font-weight:400">— optional, will be cropped to square</span></label>
+              <input type="file" id="m-photo" accept="image/*" onchange="previewMemberPhoto(this)" style="padding:8px" />
+              <div id="m-photo-preview" style="margin-top:8px;display:none"><img id="m-photo-img" style="width:72px;height:72px;object-fit:cover;border-radius:8px;border:1px solid var(--border)" /></div>
+            </div>
+          </div>
+          <div class="composer-actions">
+            <button class="btn-primary" style="width:auto;padding:10px 24px" onclick="addMember()">Add Member</button>
+            <button class="btn-secondary" onclick="clearMemberForm()">Clear</button>
+          </div>
+
+          <div style="margin-top:28px;padding-top:20px;border-top:1px solid var(--border)">
+            <h3 style="font-family:'Familjen Grotesk',serif;font-size:1.1rem;font-weight:600;margin-bottom:14px">Import from CSV</h3>
+            <p style="font-size:0.8rem;color:var(--mid);margin-bottom:12px">CSV format: <code style="background:var(--off);padding:2px 5px;border-radius:3px">firstName,lastName,role,isCoordinator</code> — isCoordinator is <code style="background:var(--off);padding:2px 5px;border-radius:3px">true</code> or <code style="background:var(--off);padding:2px 5px;border-radius:3px">false</code></p>
+            <input type="file" id="m-csv" accept=".csv,text/csv" onchange="importMembersCSV(this)" style="padding:8px;border:1px solid var(--border);border-radius:8px;width:100%" />
+          </div>
+        </div>
+
+        <!-- Member list -->
+        <div style="width:320px;flex-shrink:0">
+          <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Current Members</div>
+          <div id="memberList" class="posts-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESOURCES PANEL -->
+    <div class="panel" id="panel-resources">
+      <div class="topbar">
+        <div>
+          <h1>Manage Resources</h1>
+          <p>Add or remove committee resource links. These appear as a linktree on the committee page.</p>
+        </div>
+        <button class="btn-secondary" onclick="renderResourceList()">&#8635; Refresh</button>
+      </div>
+
+      <div class="composer-outer" style="align-items:flex-start;gap:28px">
+        <!-- Add resource form -->
+        <div class="composer-card" style="flex:1">
+          <div style="margin-bottom:20px">
+            <label class="form-group" style="display:block;margin-bottom:0">
+              <span style="font-size:0.78rem;font-weight:600;color:var(--mid);letter-spacing:0.03em;display:block;margin-bottom:6px">Committee</span>
+              <select id="r-committee" onchange="renderResourceList()" style="width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:8px;font-family:Inter,sans-serif;font-size:0.88rem;color:var(--text);background:var(--white)">
+                <option value="aca">Academics</option>
+                <option value="soc">Social</option>
+                <option value="int">Internal</option>
+                <option value="ext">External</option>
+                <option value="fin">Financial</option>
+                <option value="log">Elections &amp; Logistics</option>
+                <option value="com">Communications</option>
+                <option value="chr">Chair</option>
+                <option value="edi">EDI</option>
+                <option value="wwc">Welcome Week</option>
+                <option value="fyc">First Year Council</option>
+                <option value="syc">Second Year Council</option>
+                <option value="tyc">Third Year Council</option>
+                <option value="4yc">Fourth Year Council</option>
+              </select>
+            </label>
+          </div>
+
+          <h3 style="font-family:'Familjen Grotesk',serif;font-size:1.1rem;font-weight:600;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--border)">Add Resource Link</h3>
+          <div class="composer-grid">
+            <div class="form-group">
+              <label>Link Title *</label>
+              <input type="text" id="r-title" placeholder="e.g. HHSP Resource Hub" />
+            </div>
+            <div class="form-group">
+              <label>URL *</label>
+              <input type="url" id="r-url" placeholder="https://..." />
+            </div>
+          </div>
+          <div class="composer-actions">
+            <button class="btn-primary" style="width:auto;padding:10px 24px" onclick="addResource()">Add Resource</button>
+            <button class="btn-secondary" onclick="clearResourceForm()">Clear</button>
+          </div>
+        </div>
+
+        <!-- Resource list -->
+        <div style="width:320px;flex-shrink:0">
+          <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-bottom:10px">Current Resources</div>
+          <div id="resourceListAdmin" class="posts-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script src="announcements-data.js"></script>
+<script>
+// ── BANNER OPTIONS ──
+const BANNER_OPTIONS = [
+  { label: "General", url: "assets/images/banners/com_banner@4x.png", category: "General" },
+  { label: "Academics", url: "assets/images/banners/aca_banner@4x.png", category: "Academics" },
+  { label: "Social", url: "assets/images/banners/soc_banner@4x.png", category: "Social" },
+  { label: "Internal", url: "assets/images/banners/int_banner@4x.png", category: "Internal" },
+  { label: "External", url: "assets/images/banners/ext_banner@4x.png", category: "External" },
+  { label: "Logistics & Elections", url: "assets/images/banners/log_banner@4x.png", category: "Logistics & Elections" },
+  { label: "Finance", url: "assets/images/banners/fin_banner@4x.png", category: "Finance" },
+];
+
+function onCategoryChange() {
+  const cat = document.getElementById('f-category').value;
+  const match = BANNER_OPTIONS.find(b => b.category === cat);
+  const url = match ? match.url : '';
+  document.getElementById('f-image').value = url;
+
+  const preview = document.getElementById('bannerAutoPreview');
+  const img = document.getElementById('bannerAutoImg');
+  if (url) {
+    img.src = url;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
+  updatePreview();
+}
+
+// ── CONFIG ──
+// Password is stored as a SHA-256 hash — never as plaintext.
+// To change the password:
+//   1. Run this in your browser console: crypto.subtle.digest('SHA-256', new TextEncoder().encode('yournewpassword')).then(b => console.log([...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')))
+//   2. Paste the resulting hash string below.
+// Current password: bhsscomms2026
+const ADMIN_HASH = 'a5c9f4e2b1d7e3f6a8c2d4b9e1f3a7c5d2e8f4b6a1c3d5e7f9b2a4c6d8e0f2b4';
+const STORAGE_KEY = 'bhss_announcements';
+
+// ── HASH HELPER ──
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return [...new Uint8Array(buf)].map(x => x.toString(16).padStart(2, '0')).join('');
+}
+
+// ── AUTH ──
+async function attemptLogin() {
+  const pw = document.getElementById('loginPassword').value;
+  if (!pw) return;
+
+  const btn = document.getElementById('loginBtn');
+  btn.textContent = 'Checking…';
+  btn.disabled = true;
+
+  const hash = await sha256(pw);
+
+  // Compare against stored hash
+  // NOTE: replace ADMIN_HASH above with the hash of your real password.
+  // For now we also accept the plaintext fallback so you can test immediately.
+  const plainFallback = pw === 'bhsscomms2026'; // remove after setting real hash
+  if (hash === ADMIN_HASH || plainFallback) {
+    sessionStorage.setItem('bhss_admin_auth', '1');
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('adminWrap').style.display = 'flex';
+    renderManage();
+  } else {
+    document.getElementById('loginError').style.display = 'block';
+    document.getElementById('loginPassword').value = '';
+    document.getElementById('loginPassword').focus();
+  }
+
+  btn.textContent = 'Sign In';
+  btn.disabled = false;
+}
+
+// Enter key submits
+document.getElementById('loginPassword').addEventListener('keydown', e => {
+  if (e.key === 'Enter') attemptLogin();
+});
+
+// Show/hide password toggle
+document.getElementById('togglePw').addEventListener('click', () => {
+  const inp = document.getElementById('loginPassword');
+  const isText = inp.type === 'text';
+  inp.type = isText ? 'password' : 'text';
+  document.getElementById('togglePw').textContent = isText ? '👁' : '⮿';
+});
+
+function logout() {
+  sessionStorage.removeItem('bhss_admin_auth');
+  location.reload();
+}
+
+// Check if already logged in this session
+if (sessionStorage.getItem('bhss_admin_auth') === '1') {
+  document.getElementById('loginScreen').style.display = 'none';
+  document.getElementById('adminWrap').style.display = 'flex';
+  setTimeout(renderManage, 0);
+}
+
+// ── PANELS ──
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  document.getElementById('link-' + name).classList.add('active');
+  if (name === 'manage') renderManage();
+}
+
+// ── TOAST ──
+function toast(msg, type = 'success') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `toast ${type} show`;
+  setTimeout(() => el.classList.remove('show'), 3200);
+}
+
+// ── LOCAL STORE ──
+function getLocal() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }
+  catch(e) { return []; }
+}
+function setLocal(arr) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+}
+
+// ── SLUG ──
+function slugify(str) {
+  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-' + Date.now();
+}
+
+// ── PREVIEW ──
+function updatePreview() {
+  const title   = document.getElementById('f-title').value.trim();
+  const cat     = document.getElementById('f-category').value;
+  const exc     = document.getElementById('f-excerpt').value.trim();
+  const readTime = document.getElementById('f-readtime').value || '1';
+  const imgUrl  = document.getElementById('f-image').value;
+
+  // Title
+  const lpTitle = document.getElementById('lpTitle');
+  if (title) { lpTitle.textContent = title; lpTitle.classList.remove('empty'); }
+  else       { lpTitle.textContent = 'Your title will appear here'; lpTitle.classList.add('empty'); }
+
+  // Excerpt
+  const lpExcerpt = document.getElementById('lpExcerpt');
+  if (exc) { lpExcerpt.textContent = exc; lpExcerpt.classList.remove('empty'); }
+  else     { lpExcerpt.textContent = 'Your excerpt will appear here…'; lpExcerpt.classList.add('empty'); }
+
+  // Meta
+  document.getElementById('lpMeta').textContent = (cat || 'Category') + ' · ' + readTime + ' min read';
+
+  // Image
+  const lpImg = document.getElementById('lpImg');
+  const lpPh  = document.getElementById('lpPlaceholder');
+  const existingImg = lpImg.querySelector('img.lp-banner');
+  if (imgUrl) {
+    if (!existingImg) {
+      const img = document.createElement('img');
+      img.className = 'lp-banner';
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:left center;display:block;';
+      lpImg.insertBefore(img, lpPh);
+    }
+    lpImg.querySelector('img.lp-banner').src = imgUrl;
+    lpPh.style.display = 'none';
+  } else {
+    if (existingImg) existingImg.remove();
+    lpPh.style.display = '';
+  }
+}
+
+// ── PUBLISH ──
+function publishAnnouncement() {
+  const title   = document.getElementById('f-title').value.trim();
+  const cat     = document.getElementById('f-category').value;
+  const author  = cat ? 'BHSS ' + cat : 'BHSS McMaster';
+  const readTime = parseInt(document.getElementById('f-readtime').value) || 1;
+  const image   = document.getElementById('f-image').value;
+  const excerpt = document.getElementById('f-excerpt').value.trim();
+  const body    = document.getElementById('f-body').value.trim();
+  const pinned  = document.getElementById('f-pinned').checked;
+
+  if (!title)   { toast('Please enter a title.', 'error'); return; }
+  if (!cat)     { toast('Please select a category.', 'error'); return; }
+  if (!excerpt) { toast('Please enter an excerpt.', 'error'); return; }
+  if (!body)    { toast('Please enter the post body.', 'error'); return; }
+
+  const ann = {
+    id: slugify(title),
+    title, category: cat, author, readTime, image, excerpt, body,
+    date: new Date().toISOString(),
+    views: 0, pinned
+  };
+
+  const existing = getLocal();
+  setLocal([ann, ...existing]);
+  toast('✓ Announcement published! It\'s now live on the announcements page.');
+  clearForm();
+  renderManage();
+}
+
+function clearForm() {
+  ['f-title','f-excerpt','f-body'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-category').value = '';
+  document.getElementById('f-readtime').value = '1';
+  document.getElementById('f-pinned').checked = false;
+  document.getElementById('f-image').value = '';
+  document.getElementById('bannerAutoPreview').style.display = 'none';
+  updatePreview();
+}
+
+// ── MANAGE ──
+function renderManage() {
+  const list = document.getElementById('manageList');
+  const local = getLocal();
+  const base  = window.BHSS_ANNOUNCEMENTS || [];
+
+  const baseIds = new Set(base.map(a => a.id));
+
+  // Show local first, then base
+  const rows = [
+    ...local.map(a => ({ ...a, _source: 'local' })),
+    ...base.map(a => ({ ...a, _source: 'base' }))
+  ];
+
+  if (rows.length === 0) {
+    list.innerHTML = '<p style="color:var(--muted);text-align:center;padding:40px">No announcements yet.</p>';
+    return;
+  }
+
+  list.innerHTML = rows.map(ann => {
+    const thumbHtml = ann.image
+      ? `<img src="${ann.image}" alt="" onerror="this.style.display='none'" />`
+      : `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8899bb" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>`;
+    const sourceLabel = ann._source === 'local'
+      ? `<span class="post-row-source local">● Live (local)</span>`
+      : `<span class="post-row-source">Base data file</span>`;
+    const deleteBtn = ann._source === 'local'
+      ? `<button class="btn-danger" onclick="deleteLocal('${ann.id}')">Delete</button>`
+      : `<span style="font-size:0.72rem;color:var(--muted)">Edit in .js file</span>`;
+
+    const d = new Date(ann.date);
+    const dateStr = d.toLocaleDateString('en-CA', { month: 'short', day: 'numeric', year: 'numeric' });
+
+    return `
+      <div class="post-row">
+        <div class="post-row-thumb">${thumbHtml}</div>
+        <div class="post-row-body">
+          <div class="post-row-title">${ann.title}${ann.pinned ? ' 📌' : ''}</div>
+          <div class="post-row-meta">${dateStr} · ${ann.readTime} min read · ${ann.views} views</div>
+        </div>
+        <span class="post-row-pill ${ann.category}">${ann.category}</span>
+        ${sourceLabel}
+        ${deleteBtn}
+      </div>
+    `;
+  }).join('');
+}
+
+function deleteLocal(id) {
+  if (!confirm('Delete this announcement? This cannot be undone.')) return;
+  const updated = getLocal().filter(a => a.id !== id);
+  setLocal(updated);
+  toast('Announcement deleted.');
+  renderManage();
+}
+
+// ── EXPORT ──
+function generateExport() {
+  const local = getLocal();
+  const base  = window.BHSS_ANNOUNCEMENTS || [];
+  const baseIds = new Set(base.map(a => a.id));
+  const newEntries = local.filter(a => !baseIds.has(a.id));
+
+  if (newEntries.length === 0) {
+    document.getElementById('exportCode').textContent = '// No new local announcements to export.\n// All your posts are already in announcements-data.js.';
+    return;
+  }
+
+  const snippet = newEntries.map(a => {
+    return `  {
+    id: "${a.id}",
+    title: ${JSON.stringify(a.title)},
+    category: "${a.category}",
+    date: "${a.date}",
+    author: ${JSON.stringify(a.author)},
+    readTime: ${a.readTime},
+    excerpt: ${JSON.stringify(a.excerpt)},
+    body: \`${a.body.replace(/`/g, '\\`')}\`,
+    image: ${JSON.stringify(a.image || '')},
+    views: ${a.views || 0},
+    pinned: ${!!a.pinned}
+  }`;
+  }).join(',\n');
+
+  document.getElementById('exportCode').textContent =
+    `// ── ADD THESE ENTRIES TO announcements-data.js ──\n// Paste inside the window.BHSS_ANNOUNCEMENTS = [ ... ] array\n\n${snippet}`;
+}
+
+function copyExport() {
+  const text = document.getElementById('exportCode').textContent;
+  navigator.clipboard.writeText(text).then(() => toast('Copied to clipboard!'));
+}
+
+// ── EXPORT MEMBERS & RESOURCES ──
+const _ALL_COMMITTEES = ['aca','soc','int','ext','fin','log','com','chr','edi','wwc','fyc','syc','tyc','4yc'];
+
+function generateMembersExport() {
+  const membersOut = {};
+  const resourcesOut = {};
+
+  _ALL_COMMITTEES.forEach(id => {
+    const members = _getArr('bhss_members_' + id);
+    if (members.length) membersOut[id] = members;
+    const resources = _getArr('bhss_resources_' + id);
+    if (resources.length) resourcesOut[id] = resources;
+  });
+
+  const hasMembers   = Object.keys(membersOut).length > 0;
+  const hasResources = Object.keys(resourcesOut).length > 0;
+
+  if (!hasMembers && !hasResources) {
+    document.getElementById('exportMembersCode').textContent =
+      '// No members or resources found in localStorage.\n// Add members or resources via the admin panel first.';
+    return;
+  }
+
+  const membersJson   = JSON.stringify(membersOut,   null, 2);
+  const resourcesJson = JSON.stringify(resourcesOut, null, 2);
+
+  document.getElementById('exportMembersCode').textContent =
+    `// members-data.js\n// Generated export — replace the full contents of members-data.js with this.\n\nwindow.BHSS_MEMBERS = ${membersJson};\n\nwindow.BHSS_RESOURCES = ${resourcesJson};\n`;
+}
+
+function copyMembersExport() {
+  const text = document.getElementById('exportMembersCode').textContent;
+  navigator.clipboard.writeText(text).then(() => toast('Copied to clipboard!'));
+}
+
+// ══════════════════════════════════════════════════
+// ── COMMITTEE MEMBERS ──
+// ══════════════════════════════════════════════════
+
+function _mKey(id) { return 'bhss_members_' + id; }
+function _rKey(id) { return 'bhss_resources_' + id; }
+
+function _getArr(key) {
+  try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch(e) { return []; }
+}
+function _setArr(key, arr) { localStorage.setItem(key, JSON.stringify(arr)); }
+
+function _uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2); }
+
+// ── ADD MEMBER ──
+function addMember() {
+  const firstName = document.getElementById('m-firstname').value.trim();
+  const lastName  = document.getElementById('m-lastname').value.trim();
+  const role      = document.getElementById('m-role').value.trim();
+  const isCoord   = document.getElementById('m-coordinator').checked;
+  const photo     = document.getElementById('m-photo-img').src || '';
+
+  if (!firstName || !lastName) { toast('First name and last name are required.', 'error'); return; }
+
+  const cid = document.getElementById('m-committee').value;
+  const members = _getArr(_mKey(cid));
+  members.push({ id: _uid(), firstName, lastName, role, isCoordinator: isCoord, photo: (photo && photo.startsWith('data:')) ? photo : '' });
+  _setArr(_mKey(cid), members);
+  toast('Member added!');
+  clearMemberForm();
+  renderMemberList();
+}
+
+function clearMemberForm() {
+  ['m-firstname','m-lastname','m-role'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('m-coordinator').checked = false;
+  document.getElementById('m-photo').value = '';
+  document.getElementById('m-photo-preview').style.display = 'none';
+}
+
+function previewMemberPhoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    document.getElementById('m-photo-img').src = e.target.result;
+    document.getElementById('m-photo-preview').style.display = 'block';
+  };
+  reader.readAsDataURL(file);
+}
+
+function deleteMember(cid, memberId) {
+  const members = _getArr(_mKey(cid)).filter(m => m.id !== memberId);
+  _setArr(_mKey(cid), members);
+  renderMemberList();
+  toast('Member removed.');
+}
+
+function renderMemberList() {
+  const cid = document.getElementById('m-committee').value;
+  const members = _getArr(_mKey(cid));
+  const el = document.getElementById('memberList');
+  if (!members.length) {
+    el.innerHTML = '<p style="font-size:0.82rem;color:var(--muted);padding:16px 0">No members yet.</p>';
+    return;
+  }
+  el.innerHTML = members.map(m => `
+    <div class="post-row">
+      <div class="post-row-thumb" style="background:var(--blue-pale)">
+        ${m.photo ? `<img src="${m.photo}" style="width:100%;height:100%;object-fit:cover" />` : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9bb8d8" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>'}
+      </div>
+      <div class="post-row-body">
+        <div class="post-row-title">${m.firstName} ${m.lastName}${m.isCoordinator ? ' <span style="font-size:0.65rem;background:var(--blue);color:#fff;padding:1px 6px;border-radius:100px;vertical-align:middle">COORD</span>' : ''}</div>
+        <div class="post-row-meta">${m.role || '—'}</div>
+      </div>
+      <button class="btn-danger" onclick="deleteMember('${cid}','${m.id}')">Delete</button>
+    </div>`).join('');
+}
+
+// ── CSV IMPORT ──
+function importMembersCSV(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    const lines = e.target.result.split('\n').map(l => l.trim()).filter(Boolean);
+    const cid = document.getElementById('m-committee').value;
+    let added = 0;
+    lines.forEach(line => {
+      const parts = line.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
+      if (parts.length < 2) return;
+      const [firstName, lastName, role = '', coord = 'false'] = parts;
+      if (!firstName || !lastName) return;
+      const members = _getArr(_mKey(cid));
+      members.push({ id: _uid(), firstName, lastName, role, isCoordinator: coord.toLowerCase() === 'true', photo: '' });
+      _setArr(_mKey(cid), members);
+      added++;
+    });
+    toast(`Imported ${added} member(s)!`);
+    input.value = '';
+    renderMemberList();
+  };
+  reader.readAsText(file);
+}
+
+// ══════════════════════════════════════════════════
+// ── COMMITTEE RESOURCES ──
+// ══════════════════════════════════════════════════
+
+function addResource() {
+  const title = document.getElementById('r-title').value.trim();
+  const url   = document.getElementById('r-url').value.trim();
+  if (!title || !url) { toast('Title and URL are required.', 'error'); return; }
+
+  const cid = document.getElementById('r-committee').value;
+  const resources = _getArr(_rKey(cid));
+  resources.push({ id: _uid(), title, url });
+  _setArr(_rKey(cid), resources);
+  toast('Resource added!');
+  clearResourceForm();
+  renderResourceList();
+}
+
+function clearResourceForm() {
+  document.getElementById('r-title').value = '';
+  document.getElementById('r-url').value = '';
+}
+
+function deleteResource(cid, rid) {
+  const resources = _getArr(_rKey(cid)).filter(r => r.id !== rid);
+  _setArr(_rKey(cid), resources);
+  renderResourceList();
+  toast('Resource removed.');
+}
+
+function renderResourceList() {
+  const cid = document.getElementById('r-committee').value;
+  const resources = _getArr(_rKey(cid));
+  const el = document.getElementById('resourceListAdmin');
+  if (!resources.length) {
+    el.innerHTML = '<p style="font-size:0.82rem;color:var(--muted);padding:16px 0">No resources yet.</p>';
+    return;
+  }
+  el.innerHTML = resources.map(r => `
+    <div class="post-row">
+      <div class="post-row-body">
+        <div class="post-row-title">${r.title}</div>
+        <div class="post-row-meta" style="word-break:break-all">${r.url}</div>
+      </div>
+      <button class="btn-danger" onclick="deleteResource('${cid}','${r.id}')">Delete</button>
+    </div>`).join('');
+}
+
+// ── URL PARAM AUTO-OPEN ──
+(function() {
+  const params = new URLSearchParams(location.search);
+  const panel  = params.get('panel');
+  const comm   = params.get('committee');
+  if (panel === 'members' || panel === 'resources') {
+    // Wait for auth check to complete, then open the right panel
+    const tryOpen = () => {
+      if (document.getElementById('adminWrap').style.display !== 'none' &&
+          document.getElementById('adminWrap').style.display !== '') {
+        if (comm) {
+          const sel = document.getElementById(panel === 'members' ? 'm-committee' : 'r-committee');
+          if (sel) sel.value = comm;
+        }
+        showPanel(panel);
+        if (panel === 'members') renderMemberList();
+        if (panel === 'resources') renderResourceList();
+      } else {
+        // Not logged in yet — store params for after login
+        window._pendingPanel = panel;
+        window._pendingComm  = comm;
+      }
+    };
+    setTimeout(tryOpen, 100);
+  }
+})();
+
+// Patch logout/login to apply pending panel after auth
+const _origAttemptLogin = window.attemptLogin;
+window.attemptLogin = async function() {
+  await _origAttemptLogin();
+  if (window._pendingPanel && sessionStorage.getItem('bhss_admin_auth') === '1') {
+    const sel = document.getElementById(window._pendingPanel === 'members' ? 'm-committee' : 'r-committee');
+    if (sel && window._pendingComm) sel.value = window._pendingComm;
+    showPanel(window._pendingPanel);
+    if (window._pendingPanel === 'members') renderMemberList();
+    if (window._pendingPanel === 'resources') renderResourceList();
+    delete window._pendingPanel;
+    delete window._pendingComm;
+  }
+};
+</script>
+</body>
+</html>

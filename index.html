@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home | Mac BHSS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --maroon:    #7a003c;
+      --maroon-dk: #5a002c;
+      --blue:      #1d4fa1;
+      --blue-mid:  #2e69c9;
+      --blue-lt:   #5b9bd5;
+      --blue-pale: #ddeaf7;
+      --dark:      #0f1b2d;
+      --text:      #1a2640;
+      --mid:       #4a5a7a;
+      --muted:     #8899bb;
+      --white:     #ffffff;
+      --off:       #f5f7fa;
+      --border:    #dde5f0;
+      --nav-h:     64px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--off);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ─── MAINTENANCE BANNER ─── */
+    .banner {
+      background: var(--dark);
+      color: var(--blue-lt);
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-style: italic;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 16px 16px;
+    }
+
+    /* ─── NAV ─── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      height: var(--nav-h);
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      gap: 0;
+    }
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      margin-right: 28px;
+      flex-shrink: 0;
+    }
+    .nav-logo-mark {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Familjen Grotesk', serif;
+      font-size: 1rem; font-weight: 600;
+      color: var(--blue);
+    }
+    .nav-logo-text {
+      font-family: 'Familjen Grotesk', serif;
+      font-size: clamp(0.05rem, 3.5vw, 1.05rem); font-weight: 600;
+      color: var(--text); line-height: 1.2;
+    }
+    .nav-logo-text span {
+      display: block; font-size: clamp(0.2rem, 3.5vw, 0.7rem); font-weight: 400;
+      color: var(--muted); font-family: 'Inter', sans-serif;
+      letter-spacing: 0.04em;
+    }
+    .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; }
+    .nav-links a {
+      display: block; padding: 7px 13px;
+      font-size: 0.83rem; font-weight: 500;
+      color: var(--mid); text-decoration: none;
+      border-radius: 6px; transition: background 0.15s, color 0.15s;
+      white-space: nowrap;
+    }
+    .nav-links a:hover, .nav-links a.active { background: var(--blue); color: var(--white); }
+    
+    .has-drop { position: relative; }
+    .has-drop > a::after { content: ' ▾'; font-size: 0.6rem; opacity: 0.7; }
+    .drop {
+      display: none; position: absolute;
+      top: calc(100% + 6px); left: 0;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; box-shadow: 0 10px 32px rgba(0,0,0,0.1);
+      min-width: 176px; padding: 6px; z-index: 300;
+    }
+    .drop::before{
+      content: "";
+      position: absolute;
+      top: -20px;
+      left: 0;
+      width: 100%;
+      height: 20px;
+      background: transparent;
+    }
+    .has-drop:hover .drop { display: block; }
+    .drop a { border-radius: 6px; font-size: 0.8rem; padding: 7px 12px; color: var(--mid); }
+    .drop a:hover { background: var(--blue-pale); color: var(--blue); }
+    
+    .has-sidedrop { position: relative; }
+    .has-sidedrop > a::after { content: ' ▸'; font-size: 0.6rem; opacity: 0.7; }
+    .sidedrop {
+      display: none; position: absolute;
+      top: -200%; left: calc(100% + 8px);
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; box-shadow: 0 10px 32px rgba(0,0,0,0.1);
+      min-width: 220px; padding: 10px; z-index: 500;
+      white-space: normal;
+    }
+    .has-sidedrop::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 12px;
+      height: 100%;
+      background: transparent;
+      pointer-events: auto;
+    }
+    .has-sidedrop:hover .sidedrop { display: block; }
+    .sidedrop a { display: block; border-radius: 6px; font-size: 0.8rem; padding: 8px 12px; color: var(--mid); }
+    .sidedrop a:hover { background: var(--blue-pale); color: var(--blue); }
+    
+    .nav-resources { margin-left: auto; display: flex; align-items: center; }
+    .nav-resources a {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 16px; background: var(--blue-pale);
+      color: var(--blue); font-size: 0.8rem; font-weight: 600;
+      text-decoration: none; border-radius: 8px;
+      border: 1px solid rgba(45,105,201,0.2);
+      transition: background 0.15s, color 0.15s; white-space: nowrap;
+    }
+    .nav-resources a:hover { background: var(--blue); color: var(--white); }
+    .hamburger {
+      display: none; background: none; border: none; cursor: pointer;
+      padding: 4px; flex-direction: column; gap: 5px; margin-left: auto;
+    }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
+
+    /* ─── ABOVE FOLD: hero + announcements ─── */
+    .above-fold {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      min-height: 520px;
+      background: var(--white);
+    }
+
+    /* Left hero */
+    .hero-left { position: relative; overflow: hidden; background: var(--blue-pale); }
+    .hero-slides-wrap { position: relative; width: 100%; height: 100%; min-height: 520px; overflow: hidden; }
+    .hero-slides { display: flex; height: 100%; transition: transform 0.75s cubic-bezier(0.77,0,0.18,1); }
+    .hero-slide { min-width: 100%; height: 100%; position: relative; }
+    .hero-slide img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+    .hero-slide-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,30,70,0.65) 0%, rgba(10,30,70,0.1) 55%, transparent 100%);
+    }
+    .hero-label { position: absolute; top: 32px; left: 32px; z-index: 5; }
+    .hero-label-box {
+      display: inline-block; background: var(--blue); color: var(--white);
+      font-family: 'Familjen Grotesk', serif;
+      font-size: clamp(1.5rem, 5vw, 4rem); font-weight: 600;
+      padding: 7px 18px 7px; border-radius: 0px;
+      line-height: 1; letter-spacing: -0.01em;
+    }
+    .hero-bottom { position: absolute; bottom: 36px; left: 32px; z-index: 5; }
+    .hero-bottom-line1 {
+      display: inline-block;
+      background: var(--blue); color: var(--white); backdrop-filter: blur(4px);
+      font-family: 'Familjen Grotesk', serif;
+      color: var(--white); font-size: clamp(1.25rem, 5vw, 3rem); font-weight: 400;
+      padding: 2px 12px; border-radius: 0px; margin-bottom: -0.25rem;
+    }
+    .hero-bottom-line2 {
+      display: inline-block; background: var(--blue); color: var(--white);
+      font-family: 'Familjen Grotesk', serif;
+      font-size: clamp(1.25rem, 5vw, 4rem); font-weight: 600;
+      padding: 2px 10px 2px; border-radius: 0px; letter-spacing: -0.01em; margin-left: 1rem; margin-bottom: -1.5rem;
+    }
+    .hero-bottom-line3 {
+      display: inline-block; background: var(--blue); color: var(--white);
+      font-family: 'Familjen Grotesk', serif;
+      font-size: clamp(0.8rem, 5vw, 3rem); font-weight: 600;
+      padding: 2px 10px 7px; border-radius: 0px; letter-spacing: -0.01em; margin-left: 1rem;
+    }
+    .hero-dots {
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 7px; z-index: 10;
+    }
+    .hero-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.38); border: none; cursor: pointer; padding: 0;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .hero-dot.active { background: var(--white); transform: scale(1.3); }
+    .hero-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%); z-index: 10;
+      background: rgba(255,255,255,0.18); backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.3); color: #fff;
+      width: 38px; height: 38px; border-radius: 50%;
+      cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .hero-arrow:hover { background: rgba(255,255,255,0.32); }
+    .hero-arrow.prev { left: 14px; }
+    .hero-arrow.next { right: 14px; }
+
+    /* Right announcements panel */
+    .ann-panel {
+      background: var(--dark); display: flex; flex-direction: column;
+      padding: 36px 28px; border-left: 1px solid rgba(255,255,255,0.06);
+    }
+    .ann-panel h2 {
+      font-family: 'Familjen Grotesk', serif;
+      font-size: 2rem; font-weight: 600; color: var(--white);
+      margin-bottom: 32px; letter-spacing: -0.01em;
+    }
+    .ann-card {
+      position: relative; border-radius: 10px; overflow: hidden;
+      margin-bottom: 14px; text-decoration: none; display: block;
+      background: #1a2a44; transition: transform 0.2s, box-shadow 0.2s; flex: 1;
+    }
+    .ann-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+    .ann-card img { width: 100%; height: 130px; object-fit: cover; display: block; opacity: 0.6; transition: opacity 0.3s; }
+    .ann-card:hover img { opacity: 0.8; }
+    .ann-card-body { padding: 14px 16px; }
+    .ann-card-meta { font-size: 0.71rem; color: rgba(255,255,255,0.45); font-weight: 500; letter-spacing: 0.04em; margin-bottom: 4px; }
+    .ann-card-title { font-size: 0.9rem; font-weight: 500; color: var(--white); line-height: 1.4; }
+    .ann-viewall {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.8rem; font-weight: 600; color: rgba(255,255,255,0.55);
+      text-decoration: none; margin-top: 10px; letter-spacing: 0.03em;
+      transition: color 0.15s;
+    }
+    .ann-viewall:hover { color: var(--white); }
+    .ann-viewall::before { content: '→'; }
+
+    /* ─── DISCOVER BANNER ─── */
+    .discover-banner {
+      background: var(--blue); position: relative;
+      overflow: hidden; padding: 52px 60px; text-align: center;
+    }
+    .sq {
+      position: absolute; border: 3px solid rgba(255,255,255,0.13);
+      border-radius: 6px; animation: floatSq 7s ease-in-out infinite alternate;
+    }
+    .sq1 { width: 58px; height: 58px; top: 18px; left: 48px; transform: rotate(14deg); }
+    .sq2 { width: 38px; height: 38px; bottom: 16px; right: 90px; transform: rotate(-20deg); animation-delay: 1.5s; }
+    .sq3 { width: 26px; height: 26px; top: 30px; right: 200px; transform: rotate(8deg); animation-delay: 3s; }
+    .sq4 { width: 44px; height: 44px; bottom: 20px; left: 160px; transform: rotate(-12deg); animation-delay: 0.8s; }
+    @keyframes floatSq {
+      from { transform: rotate(14deg) translateY(0); opacity: 0.7; }
+      to   { transform: rotate(14deg) translateY(-14px); opacity: 1; }
+    }
+    .discover-banner h2 {
+      font-family: 'Familjen Grotesk', sans-serif;
+      font-size: 2.4rem; font-weight: 600; color: var(--white);
+      letter-spacing: -0.01em; position: relative; z-index: 1;
+    }
+
+    /* ─── DISCOVER CARDS ─── */
+    .discover-section { background: var(--off); padding: 0 0 60px; }
+    .discover-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 20px; max-width: 1100px; margin: 0 auto;
+      padding: 40px 40px 0;
+    }
+    .d-card {
+      background: var(--blue-pale); border: 1px solid rgba(45,105,201,0.15);
+      border-radius: 14px; padding: 36px 28px 32px;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 12px;
+      transition: transform 0.22s, box-shadow 0.22s;
+    }
+    .d-card:hover { transform: translateY(-5px); box-shadow: 0 14px 36px rgba(0,0,0,0.08); }
+    .d-card.featured { background: var(--blue); border-color: var(--blue); }
+    .d-card-icon { font-size: 1.4rem; color: var(--blue-mid); margin-bottom: 4px; }
+    .d-card-icon::before { content: '✦'; }
+    .d-card.featured .d-card-icon { color: rgba(255,255,255,0.7); }
+    .d-card h3 { font-size: 0.95rem; font-weight: 600; color: var(--text); letter-spacing: 0.01em; }
+    .d-card.featured h3 { color: var(--white); }
+    .d-card p { font-size: 0.83rem; color: var(--mid); line-height: 1.65; flex: 1; }
+    .d-card.featured p { color: rgba(255,255,255,0.75); }
+    .d-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.8rem; font-weight: 600; color: var(--blue);
+      text-decoration: none; margin-top: 6px; transition: gap 0.2s;
+    }
+    .d-card.featured .d-link { color: var(--white); }
+    .d-link:hover { gap: 9px; }
+
+    /* ─── INSTAGRAM ─── */
+    .ig-section {
+      background: var(--blue); position: relative;
+      overflow: hidden; padding: 52px 60px 56px;
+    }
+    .ig-sq {
+      position: absolute; border: 3px solid rgba(255,255,255,0.1);
+      border-radius: 6px;
+    }
+    .ig-sq1 { width: 50px; height: 50px; top: 22px; left: 28px; transform: rotate(12deg); }
+    .ig-sq2 { width: 32px; height: 32px; bottom: 28px; right: 64px; transform: rotate(-18deg); }
+    .ig-sq3 { width: 20px; height: 20px; top: 36px; right: 200px; transform: rotate(6deg); }
+    .ig-header { text-align: center; margin-bottom: 32px; position: relative; z-index: 1; }
+    .ig-header p {
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 8px;
+    }
+    .ig-header h2 {
+      font-family: 'Familjen Grotesk', serif;
+      font-size: 2.2rem; font-weight: 100; color: var(--blue-pale);
+    }
+    .ig-header h2 span { color: var(--white); font-weight: 900; }
+    .ig-carousel-wrap { position: relative; max-width: 960px; margin: 0 auto; z-index: 1; }
+    .ig-carousel {
+      display: flex; gap: 16px;
+      overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none; padding-bottom: 4px;
+    }
+    .ig-carousel::-webkit-scrollbar { display: none; }
+    .ig-post {
+      flex: 0 0 calc(50% - 8px); scroll-snap-align: start;
+      border-radius: 12px; overflow: hidden;
+      background: rgba(255,255,255,0.08); position: relative; aspect-ratio: 4/3;
+    }
+    .ig-post img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.35s; }
+    .ig-post:hover img { transform: scale(1.04); }
+    .ig-post-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 50%);
+      display: flex; align-items: flex-end; padding: 14px;
+    }
+    .ig-post-cap {
+      font-size: 0.75rem; color: rgba(255,255,255,0.85);
+      line-height: 1.4; font-weight: 400;
+      display: -webkit-box; -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .ig-next-btn {
+      position: absolute; right: -20px; top: 50%; transform: translateY(-50%);
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--white); color: var(--blue);
+      border: none; cursor: pointer; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.2);
+      transition: transform 0.2s, box-shadow 0.2s; z-index: 10;
+    }
+    .ig-next-btn:hover { transform: translateY(-50%) scale(1.08); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+    .ig-footer { text-align: center; margin-top: 28px; position: relative; z-index: 1; }
+    .ig-footer a {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.83rem; font-weight: 600; color: rgba(255,255,255,0.75);
+      text-decoration: none; letter-spacing: 0.04em;
+      padding: 10px 22px; border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px; transition: background 0.2s, color 0.2s;
+    }
+    .ig-footer a:hover { background: rgba(255,255,255,0.15); color: var(--white); }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--dark); color: rgba(255,255,255,0.55); padding: 48px 60px 40px; }
+    .footer-top { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 40px; }
+    .footer-brand p.pre { font-size: 0.6rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 4px; }
+    .footer-brand h3 { font-family: 'Familjen Grotesk', serif; font-size: 1.25rem; font-weight: 600; color: var(--white); line-height: 1.25; margin-bottom: 14px; }
+    .footer-brand .desc { font-size: 0.76rem; line-height: 1.65; color: rgba(255,255,255,0.4); }
+    .footer-brand .desc a { color: rgba(255,255,255,0.55); text-decoration: underline; }
+    .footer-col h4 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 12px; }
+    .footer-col p, .footer-col address { font-size: 0.78rem; font-style: normal; color: rgba(255,255,255,0.4); line-height: 1.65; padding-right: 100px;}
+    .footer-col a { display: inline-flex; color: rgba(255,255,255,0.45); text-decoration: none; font-size: 0.78rem; margin-bottom: 5px; transition: color 0.15s; }
+    .footer-col a:hover { color: var(--white); }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 20px; font-size: 0.72rem; color: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: space-between; }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 960px) {
+      .above-fold { grid-template-columns: 1fr; }
+      .ann-panel { min-height: unset; }
+      .hero-slides-wrap { min-height: 380px; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; }
+    }
+    @media (max-width: 640px) {
+      nav { padding: 0 16px; }
+      .nav-links, .nav-resources { display: none; }
+      .hamburger { display: flex; }
+      .discover-grid { grid-template-columns: 1fr; padding: 28px 20px 0; }
+      .discover-banner, .ig-section { padding: 36px 24px 44px; }
+      .ig-post { flex: 0 0 85%; }
+      footer { padding: 36px 24px 28px; }
+      .footer-top { grid-template-columns: 1fr; gap: 24px; }
+      .footer-bottom { flex-direction: column; gap: 6px; text-align: center; }
+    }
+
+    /* ─── MOBILE NAV DRAWER ─── */
+    .nav-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(15,27,45,0.45); z-index: 490;
+    }
+    .nav-overlay.open { display: block; }
+    .mobile-nav {
+      position: fixed; top: 0; right: 0;
+      width: min(300px, 85vw); height: 100dvh;
+      background: var(--white); z-index: 510;
+      transform: translateX(100%); transition: transform 0.25s ease;
+      overflow-y: auto; padding-bottom: 40px;
+    }
+    .mobile-nav.open { transform: translateX(0); }
+    .mobile-nav-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 16px 20px; border-bottom: 1px solid var(--border);
+    }
+    .mobile-nav-header span {
+      font-family: 'Familjen Grotesk', serif; font-weight: 600;
+      font-size: 0.95rem; color: var(--text);
+    }
+    .mobile-nav-header button {
+      background: none; border: none; cursor: pointer;
+      font-size: 1.2rem; color: var(--mid); line-height: 1; padding: 4px;
+    }
+    .mobile-nav a {
+      display: block; padding: 13px 24px; font-size: 0.9rem; font-weight: 500;
+      color: var(--text); text-decoration: none;
+      border-bottom: 1px solid var(--border); transition: background 0.12s;
+    }
+    .mobile-nav a:hover { background: var(--blue-pale); }
+    .mobile-nav .mob-section {
+      padding: 10px 24px 4px; font-size: 0.68rem; font-weight: 600;
+      letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase;
+    }
+    .mobile-nav .mob-sub a {
+      padding-left: 36px; font-size: 0.85rem; color: var(--mid);
+    }
+    .mobile-nav .mob-cta a {
+      color: var(--blue); font-weight: 600; margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Banner -->
+<div class="banner">Website is currently under maintenance. Some features may be non-functional.</div>
+
+<!-- Nav -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <img class="nav-logo-mark" src="assets/images/BHSSshield_100x97.png" alt="BHSS Logo">
+    <div class="nav-logo-text">Bachelor of Health Sciences Society<span>McMaster University</span></div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html" class="active">Home</a></li>
+    <li class="has-drop">
+      <a href="announcements.html">Announcements</a>
+      <div class="drop">
+        <a href="announcements.html">All Announcements</a>
+        <a href="announcements.html?filter=Academics">Academics</a>
+        <a href="announcements.html?filter=External">External</a>
+        <a href="announcements.html?filter=General">General</a>
+        <a href="announcements.html?filter=Finance">Finance</a>
+        <a href="announcements.html?filter=Internal">Internal</a>
+        <a href="announcements.html?filter=Social">Social</a>
+        <a href="announcements.html?filter=Elections">Elections</a>
+      </div>
+    </li>
+    <li class="has-drop">
+      <a href="committees.html">Committees</a>
+      <div class="drop">
+        <a href="committees.html">All Committees</a>
+        <a href="committeepages/aca_committee.html">Academics</a>
+        <a href="committeepages/soc_committee.html">Social</a>
+        <a href="committeepages/int_committee.html">Internal</a>
+        <a href="committeepages/ext_committee.html">External</a>
+        <a href="committeepages/fin_committee.html">Financial</a>
+        <a href="committeepages/log_committee.html">Logistics &amp; Elections</a>
+        <a href="committeepages/com_committee.html">Communications</a>
+        <a href="committeepages/chr_committee.html">Chair</a>
+        <a href="committeepages/edi_committee.html">Equity, Diversity & Inclusion</a>
+        <a href="committeepages/wwc_committee.html">Welcome Week</a>
+        <div class="has-sidedrop">
+          <a href="#">Year Councils</a>
+          <div class="sidedrop">
+            <a href="committeepages/fyc_committee.html">First Year Council</a>
+            <a href="committeepages/syc_committee.html">Second Year Council</a>
+            <a href="committeepages/tyc_committee.html">Third Year Council</a>
+            <a href="committeepages/4yc_committee.html">Fourth Year Council</a>
+          </div>
+        </div>
+      </div>
+    </li>
+    <li><a href="resources.html">Resources</a></li>
+    <li><a href="shop.html">Merch</a></li>
+    <li><a href="bags.html">BAGs</a></li>
+    <li><a href="about.html">About Us</a></li>
+  </ul>
+  <div class="nav-resources">
+    <a href="resources.html">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Academic Resources
+    </a>
+  </div>
+  <button class="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="nav-overlay" id="navOverlay"></div>
+<nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+  <div class="mobile-nav-header">
+    <span>Menu</span>
+    <button id="mobileNavClose" aria-label="Close menu">✕</button>
+  </div>
+  <a href="index.html">Home</a>
+  <div class="mob-section">Announcements</div>
+  <div class="mob-sub">
+    <a href="announcements.html">All Announcements</a>
+    <a href="announcements.html?filter=Academics">Academics</a>
+    <a href="announcements.html?filter=External">External</a>
+    <a href="announcements.html?filter=General">General</a>
+    <a href="announcements.html?filter=Finance">Finance</a>
+    <a href="announcements.html?filter=Internal">Internal</a>
+    <a href="announcements.html?filter=Social">Social</a>
+    <a href="announcements.html?filter=Elections">Elections</a>
+  </div>
+  <a href="committees.html">Committees</a>
+  <a href="resources.html">Resources</a>
+  <a href="shop.html">Merch</a>
+  <a href="bags.html">BAGs</a>
+  <a href="about.html">About Us</a>
+  <div class="mob-cta">
+    <a href="resources.html">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-right:6px"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      Academic Resources
+    </a>
+  </div>
+</nav>
+
+<!-- Above fold -->
+<div class="above-fold">
+  <!-- Hero -->
+  <div class="hero-left">
+    <div class="hero-slides-wrap">
+      <div class="hero-slides" id="heroSlides">
+        <div class="hero-slide"><img src="https://static.wixstatic.com/media/9b835e_fc569b339c66464183546c9bc83c5c47~mv2.jpg/v1/fill/w_1450,h_700,q_90,enc_avif,quality_auto/9b835e_fc569b339c66464183546c9bc83c5c47~mv2.jpg" alt="" /><div class="hero-slide-overlay"></div></div>
+        <div class="hero-slide"><img src="https://static.wixstatic.com/media/9b835e_37f342e0dc7c4a178e83e3d848a6a1e0~mv2.jpg/v1/fill/w_1450,h_700,q_90,enc_avif,quality_auto/9b835e_37f342e0dc7c4a178e83e3d848a6a1e0~mv2.jpg" alt="" /><div class="hero-slide-overlay"></div></div>
+        <div class="hero-slide"><img src="https://static.wixstatic.com/media/9b835e_d5c0a3280c204d7698cb883e5128374f~mv2.jpg/v1/fill/w_1450,h_700,q_90,enc_avif,quality_auto/9b835e_d5c0a3280c204d7698cb883e5128374f~mv2.jpg" alt="" /><div class="hero-slide-overlay"></div></div>
+        <div class="hero-slide"><img src="https://static.wixstatic.com/media/9b835e_68e02463f59b450ba5aa6ce78eb21abf~mv2.jpg/v1/fill/w_1450,h_700,q_90,enc_avif,quality_auto/9b835e_68e02463f59b450ba5aa6ce78eb21abf~mv2.jpg" alt="" /><div class="hero-slide-overlay"></div></div>
+        <div class="hero-slide"><img src="https://static.wixstatic.com/media/9b835e_eda427552af249f0b56f2c72ffe2ad34~mv2.jpg/v1/fill/w_1450,h_700,q_90,enc_avif,quality_auto/9b835e_eda427552af249f0b56f2c72ffe2ad34~mv2.jpg" alt="" /><div class="hero-slide-overlay"></div></div>
+        <div class="hero-slide"><img src="https://static.wixstatic.com/media/9b835e_6c812f01d6ca46eb9a33232eba4bf34f~mv2.jpg/v1/fill/w_1450,h_700,q_90,enc_avif,quality_auto/9b835e_6c812f01d6ca46eb9a33232eba4bf34f~mv2.jpg" alt="" /><div class="hero-slide-overlay"></div></div>
+        <div class="hero-slide"><img src="https://static.wixstatic.com/media/9b835e_89aa2385d5334725a8a8f73cf9a614aa~mv2.jpg/v1/fill/w_1450,h_700,q_90,enc_avif,quality_auto/9b835e_89aa2385d5334725a8a8f73cf9a614aa~mv2.jpg" alt="" /><div class="hero-slide-overlay"></div></div>
+      </div>
+      <div class="hero-label"><div class="hero-label-box">Hello!</div></div>
+      <div class="hero-bottom">
+        <div class="hero-bottom-line1">We're the</div><br>
+        <div class="hero-bottom-line2">McMaster</div>
+        <div class="hero-bottom-line3">Bachelor of Health Sciences Society.</div>
+      </div>
+      <button class="hero-arrow prev" id="heroPrev">&#8592;</button>
+      <button class="hero-arrow next" id="heroNext">&#8594;</button>
+      <div class="hero-dots" id="heroDots"></div>
+    </div>
+  </div>
+
+  <!-- Announcements panel -->
+  <div class="ann-panel">
+    <h2>Announcements</h2>
+    <a class="ann-card" href="https://macbhss.wixstudio.com/my-site-1/post/bhss-elections-campaign-materials" target="_blank">
+      <img src="https://static.wixstatic.com/media/9b835e_fc1985c410214574bc81b88627a23197~mv2.png/v1/fill/w_474,h_267,fp_0.50_0.50,q_95,enc_avif,quality_auto/9b835e_fc1985c410214574bc81b88627a23197~mv2.webp" alt="BHSS Elections" />
+      <div class="ann-card-body">
+        <div class="ann-card-meta">1 day ago</div>
+        <div class="ann-card-title">BHSS Elections Campaign Materials</div>
+      </div>
+    </a>
+    <a class="ann-card" href="https://macbhss.wixstudio.com/my-site-1/post/Welcome-to-the-new-bhss-website" target="_blank">
+      <img src="https://static.wixstatic.com/media/9b835e_57071cbc9af74ef08ba5fbb685ac7578~mv2.png/v1/fill/w_474,h_267,fp_0.50_0.50,q_95,enc_avif,quality_auto/9b835e_57071cbc9af74ef08ba5fbb685ac7578~mv2.webp" alt="New BHSS website" />
+      <div class="ann-card-body">
+        <div class="ann-card-meta">1 day ago</div>
+        <div class="ann-card-title">Welcome to the new BHSS website!</div>
+      </div>
+    </a>
+    <a class="ann-viewall" href="announcements.html">View All Announcements</a>
+  </div>
+</div>
+
+<!-- Discover banner -->
+<div class="discover-banner">
+  <div class="sq sq1"></div><div class="sq sq2"></div>
+  <div class="sq sq3"></div><div class="sq sq4"></div>
+  <h2>Discover more</h2>
+</div>
+
+<!-- Discover cards -->
+<div class="discover-section">
+  <div class="discover-grid">
+    <div class="d-card">
+      <div class="d-card-icon"></div>
+      <h3>BHSS Committees</h3>
+      <p>Learn more about the committees that make up BHSS, including Academics, Communications, EDI, External, Finance, Internal, Logistics & Elections, Social, and Welcome Week, as well as our Year Councils.</p>
+      <a class="d-link" href="committees.html">Learn More →</a>
+    </div>
+    <div class="d-card featured">
+      <div class="d-card-icon"></div>
+      <h3>BHSS Resource Hub</h3>
+      <p>Trying to sign up for an event? Looking for the BHSS Academics Google Drive? Thinking of applying for a BHSS position? Check out our resources tab to find everything BHSS!</p>
+      <a class="d-link" href="https://drive.google.com/drive/u/0/folders/1YlpnrLa7I39miOYMrV8sf2DoPRnFAx20" target="_blank">See More →</a>
+    </div>
+    <div class="d-card">
+      <div class="d-card-icon"></div>
+      <h3>BHSS BAGs</h3>
+      <p>Discover the BHSS Affiliated Groups (BAGs) that we support and learn more about their missions, events, and how you can get involved. Also, find information about applying for BAG status.</p>
+      <a class="d-link" href="bags.html">Learn More →</a>
+    </div>
+  </div>
+</div>
+
+<!-- Instagram -->
+<div class="ig-section">
+  <div class="ig-sq ig-sq1"></div><div class="ig-sq ig-sq2"></div><div class="ig-sq ig-sq3"></div>
+  <div class="ig-header">
+    <p>Social</p>
+    <h2>Follow us on Instagram <span>@macbhss</span></h2>
+  </div>
+  <div class="ig-carousel-wrap">
+    <div class="ig-carousel" id="igCarousel"></div>
+    <button class="ig-next-btn" id="igNextBtn">&#8594;</button>
+  </div>
+  <div class="ig-footer">
+    <a href="https://www.instagram.com/macbhss/" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      Follow @macbhss on Instagram
+    </a>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <p class="pre">McMaster</p>
+      <h3>BACHELOR OF HEALTH<br>SCIENCES SOCIETY</h3>
+      <p class="desc">The McMaster Bachelor of Health Sciences Society recognizes that McMaster University sits on the traditional territories of the Haudenosaunee Confederacy and the Anishinaabe Nations, which is recognized by the "Dish With One Spoon" wampum agreement. <a href="#">Click here to learn more.</a></p>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="#">Terms of Use</a>
+      <br>
+      <a href="#">Privacy Policy</a>
+    </div>
+    <div class="footer-col">
+      <h4>Office</h4>
+      <address>MDCL 3308, McMaster University<br>1280 Main Street West<br>Hamilton, ON  L8S 4K1</address>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <p>The Bachelors of Health Science Society's Website is designed and developed by the BHSS Communications Committee. If you have any questions, please reach out to <a href="mailto:bhsscom@mcmaster.ca" style="color:rgba(255,255,255,0.55);text-decoration:underline">bhsscom@mcmaster.ca</a> or <a href="https://instagram.com/macbhss" style="color:rgba(255,255,255,0.55);text-decoration:underline">@macbhss</a>.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 McMaster Bachelor of Health Sciences Society</span>
+    <span>Built by BHSS Communications Committee</span>
+  </div>
+</footer>
+
+<script>
+// ── HERO ──
+const slides = document.querySelectorAll('.hero-slide');
+const dotsEl = document.getElementById('heroDots');
+let cur = 0, autoTimer;
+
+slides.forEach((_, i) => {
+  const d = document.createElement('button');
+  d.className = 'hero-dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => { go(i); resetAuto(); });
+  dotsEl.appendChild(d);
+});
+function go(n) {
+  cur = (n + slides.length) % slides.length;
+  document.getElementById('heroSlides').style.transform = `translateX(-${cur * 100}%)`;
+  document.querySelectorAll('.hero-dot').forEach((d, i) => d.classList.toggle('active', i === cur));
+}
+function startAuto() { autoTimer = setInterval(() => go(cur + 1), 4800); }
+function resetAuto() { clearInterval(autoTimer); startAuto(); }
+document.getElementById('heroPrev').addEventListener('click', () => { go(cur - 1); resetAuto(); });
+document.getElementById('heroNext').addEventListener('click', () => { go(cur + 1); resetAuto(); });
+startAuto();
+
+// ── INSTAGRAM ──
+const igPosts = [
+  { src: "https://scontent-den2-1.cdninstagram.com/v/t51.82787-15/657151728_18194967691359211_936133105952920312_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=105&ccb=7-5&_nc_sid=18de74&_nc_ohc=j69fV3QN01IQ7kNvwHBqMe8&_nc_ht=scontent-den2-1.cdninstagram.com&oh=00_Afz1NlOqbx5nDIHcG70oEVs7SqIkqU1aFAjx_IbB01FI_g&oe=69CCEF1D", cap: "Biannual Formal Bylaw Vote — Voting closes March 31, 2026" },
+  { src: "https://scontent-den2-1.cdninstagram.com/v/t51.82787-15/658804541_18194933614359211_7794779238763253729_n.heic?stp=dst-jpg_e35_tt6&_nc_cat=107&ccb=7-5&_nc_sid=18de74&_nc_ohc=ozKO6WQJfDgQ7kNvwFS6Pyq&_nc_ht=scontent-den2-1.cdninstagram.com&oh=00_Afw5j7JDFMkW4emMVcHs1pthVa37gvb1jCxSM54t2MNd8g&oe=69CD25A2", cap: "Meet the new BHSS website, redesigned and refined." },
+  { src: "https://scontent-den2-1.cdninstagram.com/v/t51.82787-15/656908108_18194899936359211_9034560994697151529_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=100&ccb=7-5&_nc_sid=18de74&_nc_ohc=UTE-TjfJZKoQ7kNvwHf2c1k&_nc_ht=scontent-den2-1.cdninstagram.com&oh=00_AfwDIZ4dRjKS0DE5FssH20JRzSqAje9LTA3U7iNzwdn80g&oe=69CCEFA5", cap: "Voting is now open for the BHSS Spring 2026 Elections." },
+  { src: "https://scontent-den2-1.cdninstagram.com/v/t51.82787-15/656294606_18194516002359211_1813873877978743512_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=107&ccb=7-5&_nc_sid=18de74&_nc_ohc=bh5XBwZkYfAQ7kNvwGb_YUB&_nc_ht=scontent-den2-1.cdninstagram.com&oh=00_AfwBTLSs_4hOSnFTcFVaQZJDj9E9bGZXx6-yjgMAjDJzCw&oe=69CD043C", cap: "Hot Breakfast Alert! Pancakes & turkey bacon — Wednesday, March 25th." },
+  { src: "https://scontent-den2-1.cdninstagram.com/v/t51.82787-15/655229276_18194409295359211_8720412492131484524_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=102&ccb=7-5&_nc_sid=18de74&_nc_ohc=NXEuUP2YWCYQ7kNvwGZjQp1&_nc_ht=scontent-den2-1.cdninstagram.com&oh=00_Afz5jZdgkMsyPOa96TyX11SGVJLI72u810PKKttRsDo4XQ&oe=69CCFB15", cap: "BHSS EDI is hosting our first ever culture day!" },
+  { src: "https://scontent-den2-1.cdninstagram.com/v/t51.82787-15/652369985_18193250293359211_2181868621593300273_n.jpg?stp=dst-jpg_e35_tt6&_nc_cat=108&ccb=7-5&_nc_sid=18de74&_nc_ohc=QV8GbNV67Z4Q7kNvwFHLrSK&_nc_ht=scontent-den2-1.cdninstagram.com&oh=00_AfygJlsxlqU6Oow7aYfy9ndkbXuae_h5Vpzyg1pTcQGvyw&oe=69CCFE18", cap: "BHSS Finance presents Casino Night!" },
+];
+const igCarousel = document.getElementById('igCarousel');
+igPosts.forEach(({ src, cap }) => {
+  const el = document.createElement('div');
+  el.className = 'ig-post';
+  el.innerHTML = `<img src="${src}" alt="${cap}" loading="lazy" onerror="this.closest('.ig-post').style.display='none'" /><div class="ig-post-overlay"><p class="ig-post-cap">${cap}</p></div>`;
+  igCarousel.appendChild(el);
+});
+document.getElementById('igNextBtn').addEventListener('click', () => {
+  const w = (igCarousel.querySelector('.ig-post')?.offsetWidth || 400) + 16;
+  igCarousel.scrollBy({ left: w * 2, behavior: 'smooth' });
+});
+
+// ── MOBILE NAV ──
+const hamburger = document.querySelector('.hamburger');
+const mobileNav = document.getElementById('mobileNav');
+const navOverlay = document.getElementById('navOverlay');
+function openMobileNav() {
+  mobileNav.classList.add('open');
+  navOverlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileNav() {
+  mobileNav.classList.remove('open');
+  navOverlay.classList.remove('open');
+  document.body.style.overflow = '';
+}
+hamburger.addEventListener('click', openMobileNav);
+document.getElementById('mobileNavClose').addEventListener('click', closeMobileNav);
+navOverlay.addEventListener('click', closeMobileNav);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
+</script>
+</body>
+</html>
