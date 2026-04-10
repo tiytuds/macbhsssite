@@ -83,20 +83,6 @@ function _cardHTML(m, large) {
   });
 })();
 
-// ── MOBILE NAV ──
-(function () {
-  const ham     = document.querySelector('.hamburger');
-  const mnav    = document.getElementById('mobileNav');
-  const overlay = document.getElementById('navOverlay');
-  if (!ham) return;
-  const open  = () => { mnav.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; };
-  const close = () => { mnav.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; };
-  ham.addEventListener('click', open);
-  document.getElementById('mobileNavClose').addEventListener('click', close);
-  overlay.addEventListener('click', close);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
-})();
-
 // ── INIT ──
 renderResources();
 renderMembers();

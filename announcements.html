@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="mobile-nav.css" />
   <style>
     :root {
       --maroon:    #7a003c;
@@ -153,11 +154,6 @@
       transition: background 0.15s, color 0.15s; white-space: nowrap;
     }
     .nav-resources a:hover { background: var(--blue); color: var(--white); }
-    .hamburger {
-      display: none; background: none; border: none; cursor: pointer;
-      padding: 4px; flex-direction: column; gap: 5px; margin-left: auto;
-    }
-    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
 
     /* ─── PAGE HEADER ─── */
     .page-header {
@@ -401,55 +397,11 @@
     @media (max-width: 600px) {
       nav.sitenav { padding: 0 16px; }
       .nav-links, .nav-resources { display: none; }
-      .hamburger { display: flex; }
       .post-card { width: 260px; }
       .modal-body { padding: 24px 20px 32px; }
       .footer-top { grid-template-columns: 1fr; }
       footer { padding: 36px 24px 28px; }
       .footer-bottom { flex-direction: column; gap: 6px; }
-    }
-
-    /* ─── MOBILE NAV DRAWER ─── */
-    .nav-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(15,27,45,0.45); z-index: 490;
-    }
-    .nav-overlay.open { display: block; }
-    .mobile-nav {
-      position: fixed; top: 0; right: 0;
-      width: min(300px, 85vw); height: 100dvh;
-      background: var(--white); z-index: 510;
-      transform: translateX(100%); transition: transform 0.25s ease;
-      overflow-y: auto; padding-bottom: 40px;
-    }
-    .mobile-nav.open { transform: translateX(0); }
-    .mobile-nav-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 20px; border-bottom: 1px solid var(--border);
-    }
-    .mobile-nav-header span {
-      font-family: 'Familjen Grotesk', serif; font-weight: 600;
-      font-size: 0.95rem; color: var(--text);
-    }
-    .mobile-nav-header button {
-      background: none; border: none; cursor: pointer;
-      font-size: 1.2rem; color: var(--mid); line-height: 1; padding: 4px;
-    }
-    .mobile-nav a {
-      display: block; padding: 13px 24px; font-size: 0.9rem; font-weight: 500;
-      color: var(--text); text-decoration: none;
-      border-bottom: 1px solid var(--border); transition: background 0.12s;
-    }
-    .mobile-nav a:hover { background: var(--blue-pale); }
-    .mobile-nav .mob-section {
-      padding: 10px 24px 4px; font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase;
-    }
-    .mobile-nav .mob-sub a {
-      padding-left: 36px; font-size: 0.85rem; color: var(--mid);
-    }
-    .mobile-nav .mob-cta a {
-      color: var(--blue); font-weight: 600; margin-top: 8px;
     }
   </style>
 </head>
@@ -516,37 +468,6 @@
     </a>
   </div>
   <button class="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
-</nav>
-
-<div class="nav-overlay" id="navOverlay"></div>
-<nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-  <div class="mobile-nav-header">
-    <span>Menu</span>
-    <button id="mobileNavClose" aria-label="Close menu">✕</button>
-  </div>
-  <a href="index.html">Home</a>
-  <div class="mob-section">Announcements</div>
-  <div class="mob-sub">
-    <a href="announcements.html">All Announcements</a>
-    <a href="announcements.html?filter=Academics">Academics</a>
-    <a href="announcements.html?filter=External">External</a>
-    <a href="announcements.html?filter=General">General</a>
-    <a href="announcements.html?filter=Finance">Finance</a>
-    <a href="announcements.html?filter=Internal">Internal</a>
-    <a href="announcements.html?filter=Social">Social</a>
-    <a href="announcements.html?filter=Elections">Elections</a>
-  </div>
-  <a href="committees.html">Committees</a>
-  <a href="resources.html">Resources</a>
-  <a href="shop.html">Merch</a>
-  <a href="bags.html">BAGs</a>
-  <a href="about.html">About Us</a>
-  <div class="mob-cta">
-    <a href="resources.html">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-right:6px"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-      Academic Resources
-    </a>
-  </div>
 </nav>
 
 <!-- Page header -->
@@ -880,24 +801,7 @@ if (urlFilter) {
 
 render();
 
-// ── MOBILE NAV ──
-const hamburger = document.querySelector('.hamburger');
-const mobileNav = document.getElementById('mobileNav');
-const navOverlay = document.getElementById('navOverlay');
-function openMobileNav() {
-  mobileNav.classList.add('open');
-  navOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeMobileNav() {
-  mobileNav.classList.remove('open');
-  navOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-hamburger.addEventListener('click', openMobileNav);
-document.getElementById('mobileNavClose').addEventListener('click', closeMobileNav);
-navOverlay.addEventListener('click', closeMobileNav);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
 </script>
+<script src="mobile-nav.js"></script>
 </body>
 </html>

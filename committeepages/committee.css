@@ -63,8 +63,6 @@ nav.sitenav {
 .nav-resources { margin-left: auto; display: flex; align-items: center; }
 .nav-resources a { display: flex; align-items: center; gap: 6px; padding: 8px 16px; background: var(--blue-pale); color: var(--blue); font-size: 0.8rem; font-weight: 600; text-decoration: none; border-radius: 8px; border: 1px solid rgba(45,105,201,0.2); transition: background 0.15s, color 0.15s; white-space: nowrap; }
 .nav-resources a:hover { background: var(--blue); color: var(--white); }
-.hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; margin-left: auto; }
-.hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
 
 /* ─── COMMITTEE SUB-NAV ─── */
 .comm-subnav-wrap { background: var(--white); border-bottom: 1px solid var(--border); overflow-x: auto; scrollbar-width: none; }
@@ -139,20 +137,6 @@ footer { background: var(--dark); color: rgba(255,255,255,0.55); padding: 48px 6
 .footer-col a:hover { color: var(--white); }
 .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 20px; font-size: 0.72rem; color: rgba(255,255,255,0.25); display: flex; align-items: center; justify-content: space-between; }
 
-/* ─── MOBILE NAV DRAWER ─── */
-.nav-overlay { display: none; position: fixed; inset: 0; background: rgba(15,27,45,0.45); z-index: 490; }
-.nav-overlay.open { display: block; }
-.mobile-nav { position: fixed; top: 0; right: 0; width: min(300px, 85vw); height: 100dvh; background: var(--white); z-index: 510; transform: translateX(100%); transition: transform 0.25s ease; overflow-y: auto; padding-bottom: 40px; }
-.mobile-nav.open { transform: translateX(0); }
-.mobile-nav-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid var(--border); }
-.mobile-nav-header span { font-family: 'Familjen Grotesk', serif; font-weight: 600; font-size: 0.95rem; color: var(--text); }
-.mobile-nav-header button { background: none; border: none; cursor: pointer; font-size: 1.2rem; color: var(--mid); line-height: 1; padding: 4px; }
-.mobile-nav a { display: block; padding: 13px 24px; font-size: 0.9rem; font-weight: 500; color: var(--text); text-decoration: none; border-bottom: 1px solid var(--border); transition: background 0.12s; }
-.mobile-nav a:hover { background: var(--blue-pale); }
-.mobile-nav .mob-section { padding: 10px 24px 4px; font-size: 0.68rem; font-weight: 600; letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase; }
-.mobile-nav .mob-sub a { padding-left: 36px; font-size: 0.85rem; color: var(--mid); }
-.mobile-nav .mob-cta a { color: var(--blue); font-weight: 600; margin-top: 8px; }
-
 /* ─── RESPONSIVE ─── */
 @media (max-width: 1100px) {
   .people-layout { grid-template-columns: 220px 1fr; gap: 40px; }
@@ -169,7 +153,6 @@ footer { background: var(--dark); color: rgba(255,255,255,0.55); padding: 48px 6
 @media (max-width: 640px) {
   nav.sitenav { padding: 0 16px; }
   .nav-links, .nav-resources { display: none; }
-  .hamburger { display: flex; }
   .comm-hero { height: 200px; }
   .comm-hero img { object-position: left top; }
   .comm-info { padding: 28px 20px; }

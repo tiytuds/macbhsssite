@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="mobile-nav.css" />
   <style>
     :root {
       --maroon:    #7a003c;
@@ -151,11 +152,6 @@
       transition: background 0.15s, color 0.15s; white-space: nowrap;
     }
     .nav-resources a:hover { background: var(--blue); color: var(--white); }
-    .hamburger {
-      display: none; background: none; border: none; cursor: pointer;
-      padding: 4px; flex-direction: column; gap: 5px; margin-left: auto;
-    }
-    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
 
     /* ─── PAGE HERO ─── */
     .page-hero {
@@ -357,7 +353,6 @@
     @media (max-width: 640px) {
       nav.sitenav { padding: 0 16px; }
       .nav-links, .nav-resources { display: none; }
-      .hamburger { display: flex; }
       .card-grid.cols-4,
       .card-grid.cols-2 { grid-template-columns: 1fr; max-width: 100%; }
       .page-hero { padding: 36px 20px 36px; }
@@ -365,49 +360,6 @@
       footer { padding: 36px 24px 28px; }
       .footer-top { grid-template-columns: 1fr; gap: 24px; }
       .footer-bottom { flex-direction: column; gap: 6px; text-align: center; }
-    }
-
-    /* ─── MOBILE NAV DRAWER ─── */
-    .nav-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(15,27,45,0.45); z-index: 490;
-    }
-    .nav-overlay.open { display: block; }
-    .mobile-nav {
-      position: fixed; top: 0; right: 0;
-      width: min(300px, 85vw); height: 100dvh;
-      background: var(--white); z-index: 510;
-      transform: translateX(100%); transition: transform 0.25s ease;
-      overflow-y: auto; padding-bottom: 40px;
-    }
-    .mobile-nav.open { transform: translateX(0); }
-    .mobile-nav-header {
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 16px 20px; border-bottom: 1px solid var(--border);
-    }
-    .mobile-nav-header span {
-      font-family: 'Familjen Grotesk', serif; font-weight: 600;
-      font-size: 0.95rem; color: var(--text);
-    }
-    .mobile-nav-header button {
-      background: none; border: none; cursor: pointer;
-      font-size: 1.2rem; color: var(--mid); line-height: 1; padding: 4px;
-    }
-    .mobile-nav a {
-      display: block; padding: 13px 24px; font-size: 0.9rem; font-weight: 500;
-      color: var(--text); text-decoration: none;
-      border-bottom: 1px solid var(--border); transition: background 0.12s;
-    }
-    .mobile-nav a:hover { background: var(--blue-pale); }
-    .mobile-nav .mob-section {
-      padding: 10px 24px 4px; font-size: 0.68rem; font-weight: 600;
-      letter-spacing: 0.08em; color: var(--muted); text-transform: uppercase;
-    }
-    .mobile-nav .mob-sub a {
-      padding-left: 36px; font-size: 0.85rem; color: var(--mid);
-    }
-    .mobile-nav .mob-cta a {
-      color: var(--blue); font-weight: 600; margin-top: 8px;
     }
 
 </style>
@@ -476,48 +428,6 @@
   </div>
   <button class="hamburger" aria-label="Open menu"><span></span><span></span><span></span></button>
 </nav>
-
-<div class="nav-overlay" id="navOverlay"></div>
-<nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-  <div class="mobile-nav-header"><span>Menu</span><button id="mobileNavClose">&#10005;</button></div>
-  <a href="index.html">Home</a>
-  <div class="mob-section">Announcements</div>
-  <div class="mob-sub">
-    <a href="announcements.html">All Announcements</a>
-    <a href="announcements.html?filter=Academics">Academics</a>
-    <a href="announcements.html?filter=External">External</a>
-    <a href="announcements.html?filter=General">General</a>
-    <a href="announcements.html?filter=Finance">Finance</a>
-    <a href="announcements.html?filter=Internal">Internal</a>
-    <a href="announcements.html?filter=Social">Social</a>
-    <a href="announcements.html?filter=Elections">Elections</a>
-  </div>
-  <a href="committees.html">Committees</a>
-  <a href="resources.html">Resources</a>
-  <a href="shop.html">Merch</a>
-  <a href="bags.html">BAGs</a>
-  <a href="about.html">About Us</a>
-  <div class="mob-cta"><a href="resources.html">Academic Resources</a></div>
-</nav>
-
-<div class="comm-subnav-wrap">
-  <div class="comm-subnav">
-    <a class="comm-tab" href="aca_committee.html">Academics</a>
-    <a class="comm-tab" href="soc_committee.html">Social</a>
-    <a class="comm-tab" href="int_committee.html">Internal</a>
-    <a class="comm-tab" href="ext_committee.html">External</a>
-    <a class="comm-tab" href="fin_committee.html">Financial</a>
-    <a class="comm-tab" href="log_committee.html">Logistics</a>
-    <a class="comm-tab" href="com_committee.html">Communications</a>
-    <a class="comm-tab" href="chr_committee.html">Chair</a>
-    <a class="comm-tab" href="edi_committee.html">EDI</a>
-    <a class="comm-tab" href="wwc_committee.html">Welcome Week</a>
-    <a class="comm-tab" href="fyc_committee.html">FYC</a>
-    <a class="comm-tab" href="syc_committee.html">SYC</a>
-    <a class="comm-tab" href="tyc_committee.html">TYC</a>
-    <a class="comm-tab" href="4yc_committee.html">4YC</a>
-  </div>
-</div>
 
 <!-- Page Hero -->
 <div class="page-hero">
@@ -835,25 +745,6 @@
   </div>
 </footer>
 
-<script>
-// ── MOBILE NAV ──
-const hamburger = document.querySelector('.hamburger');
-const mobileNav = document.getElementById('mobileNav');
-const navOverlay = document.getElementById('navOverlay');
-function openMobileNav() {
-  mobileNav.classList.add('open');
-  navOverlay.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeMobileNav() {
-  mobileNav.classList.remove('open');
-  navOverlay.classList.remove('open');
-  document.body.style.overflow = '';
-}
-hamburger.addEventListener('click', openMobileNav);
-document.getElementById('mobileNavClose').addEventListener('click', closeMobileNav);
-navOverlay.addEventListener('click', closeMobileNav);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileNav(); });
-</script>
+<script src="mobile-nav.js"></script>
 </body>
 </html>
