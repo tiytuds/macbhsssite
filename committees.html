@@ -47,7 +47,7 @@
     }
 
     /* ─── NAV ─── */
-    nav {
+    nav.sitenav {
       position: sticky;
       top: 0;
       z-index: 500;
@@ -355,7 +355,7 @@
       .committees-section { padding: 36px 24px 60px; }
     }
     @media (max-width: 640px) {
-      nav { padding: 0 16px; }
+      nav.sitenav { padding: 0 16px; }
       .nav-links, .nav-resources { display: none; }
       .hamburger { display: flex; }
       .card-grid.cols-4,
@@ -418,7 +418,7 @@
 <div class="banner">Website is currently under maintenance. Some features may be non-functional.</div>
 
 <!-- Nav -->
-<nav>
+<nav class="sitenav">
   <a href="index.html" class="nav-logo">
     <img class="nav-logo-mark" src="assets/images/BHSSshield_100x97.png" alt="BHSS Logo">
     <div class="nav-logo-text">Bachelor of Health Sciences Society<span>McMaster University</span></div>
@@ -479,10 +479,7 @@
 
 <div class="nav-overlay" id="navOverlay"></div>
 <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
-  <div class="mobile-nav-header">
-    <span>Menu</span>
-    <button id="mobileNavClose" aria-label="Close menu">✕</button>
-  </div>
+  <div class="mobile-nav-header"><span>Menu</span><button id="mobileNavClose">&#10005;</button></div>
   <a href="index.html">Home</a>
   <div class="mob-section">Announcements</div>
   <div class="mob-sub">
@@ -500,13 +497,27 @@
   <a href="shop.html">Merch</a>
   <a href="bags.html">BAGs</a>
   <a href="about.html">About Us</a>
-  <div class="mob-cta">
-    <a href="resources.html">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="vertical-align:-2px;margin-right:6px"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-      Academic Resources
-    </a>
-  </div>
+  <div class="mob-cta"><a href="resources.html">Academic Resources</a></div>
 </nav>
+
+<div class="comm-subnav-wrap">
+  <div class="comm-subnav">
+    <a class="comm-tab" href="aca_committee.html">Academics</a>
+    <a class="comm-tab" href="soc_committee.html">Social</a>
+    <a class="comm-tab" href="int_committee.html">Internal</a>
+    <a class="comm-tab" href="ext_committee.html">External</a>
+    <a class="comm-tab" href="fin_committee.html">Financial</a>
+    <a class="comm-tab" href="log_committee.html">Logistics</a>
+    <a class="comm-tab" href="com_committee.html">Communications</a>
+    <a class="comm-tab" href="chr_committee.html">Chair</a>
+    <a class="comm-tab" href="edi_committee.html">EDI</a>
+    <a class="comm-tab" href="wwc_committee.html">Welcome Week</a>
+    <a class="comm-tab" href="fyc_committee.html">FYC</a>
+    <a class="comm-tab" href="syc_committee.html">SYC</a>
+    <a class="comm-tab" href="tyc_committee.html">TYC</a>
+    <a class="comm-tab" href="4yc_committee.html">4YC</a>
+  </div>
+</div>
 
 <!-- Page Hero -->
 <div class="page-hero">

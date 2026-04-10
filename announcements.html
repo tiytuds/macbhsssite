@@ -49,7 +49,7 @@
     }
 
     /* ─── NAV ─── */
-    nav {
+    nav.sitenav {
       position: sticky;
       top: 0;
       z-index: 500;
@@ -399,7 +399,7 @@
       .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; }
     }
     @media (max-width: 600px) {
-      nav { padding: 0 16px; }
+      nav.sitenav { padding: 0 16px; }
       .nav-links, .nav-resources { display: none; }
       .hamburger { display: flex; }
       .post-card { width: 260px; }
@@ -459,7 +459,7 @@
 <div class="banner">Website is currently under maintenance. Some features may be non-functional.</div>
 
 <!-- Nav -->
-<nav>
+<nav class="sitenav">
   <a href="index.html" class="nav-logo">
     <img class="nav-logo-mark" src="assets/images/BHSSshield_100x97.png" alt="BHSS Logo">
     <div class="nav-logo-text">Bachelor of Health Sciences Society<span>McMaster University</span></div>
