@@ -150,7 +150,7 @@ footer { background: var(--dark); color: rgba(255,255,255,0.55); padding: 48px 6
   #membersGrid { grid-template-columns: repeat(3, 1fr); }
   .footer-top { grid-template-columns: 1fr 1fr; gap: 28px; }
 }
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   nav.sitenav { padding: 0 16px; }
   .nav-links, .nav-resources { display: none; }
   .comm-hero { height: 200px; }

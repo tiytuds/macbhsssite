@@ -8,7 +8,7 @@
 /* ─── HAMBURGER BUTTON ─── */
 .hamburger { display: none; background: none; border: none; cursor: pointer; padding: 4px; flex-direction: column; gap: 5px; margin-left: auto; }
 .hamburger span { display: block; width: 22px; height: 2px; background: var(--text); border-radius: 2px; }
-@media (max-width: 640px) {
+@media (max-width: 768px) {
   .hamburger { display: flex; }
 }
 
