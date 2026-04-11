@@ -6,7 +6,7 @@
   <title>Home | Mac BHSS</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="mobile-nav.css" />
   <style>
     :root {
@@ -24,6 +24,13 @@
       --off:       #f5f7fa;
       --border:    #dde5f0;
       --nav-h:     64px;
+      --cat-General:   #4a7c59;
+      --cat-Academics: #1d4fa1;
+      --cat-Social:    #c05c1a;
+      --cat-Internal:  #7a003c;
+      --cat-External:  #2e7d6b;
+      --cat-Elections: #5c3d99;
+      --cat-Finance:   #b5860d;
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
@@ -251,6 +258,52 @@
     }
     .ann-viewall:hover { color: var(--white); }
     .ann-viewall::before { content: '→'; }
+    .ann-card { cursor: pointer; }
+
+    /* ─── MODAL ─── */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0; z-index: 900;
+      background: rgba(15,27,45,0.72); backdrop-filter: blur(6px);
+      align-items: center; justify-content: center; padding: 24px;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal {
+      background: var(--white); border-radius: 18px;
+      width: 100%; max-width: 720px; max-height: 88vh;
+      overflow-y: auto; box-shadow: 0 32px 80px rgba(0,0,0,0.25);
+      animation: modalIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    @keyframes modalIn { from { opacity: 0; transform: scale(0.94) translateY(12px); } to { opacity: 1; transform: none; } }
+    .modal-hero { position: relative; height: 260px; overflow: hidden; background: var(--blue-pale); }
+    .modal-hero img { width: 100%; height: 100%; object-fit: cover; object-position: left center; }
+    .modal-hero-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+    .modal-close {
+      position: absolute; top: 14px; right: 14px;
+      background: rgba(255,255,255,0.9); border: none; border-radius: 50%;
+      width: 36px; height: 36px; cursor: pointer; font-size: 1.1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.15s; color: var(--text); z-index: 10;
+    }
+    .modal-close:hover { background: var(--white); }
+    .modal-body { padding: 32px 36px 40px; }
+    .modal-cat-pill {
+      display: inline-block; padding: 4px 12px; border-radius: 100px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--white); margin-bottom: 16px;
+    }
+    .modal-cat-pill.General   { background: var(--cat-General); }
+    .modal-cat-pill.Academics { background: var(--cat-Academics); }
+    .modal-cat-pill.Social    { background: var(--cat-Social); }
+    .modal-cat-pill.Internal  { background: var(--cat-Internal); }
+    .modal-cat-pill.External  { background: var(--cat-External); }
+    .modal-cat-pill.Elections { background: var(--cat-Elections); }
+    .modal-cat-pill.Finance   { background: var(--cat-Finance); }
+    .modal-body h2 { font-family: 'Familjen Grotesk', serif; font-size: 2rem; font-weight: 600; color: var(--text); line-height: 1.2; letter-spacing: -0.02em; margin-bottom: 12px; }
+    .modal-meta { font-size: 0.78rem; color: var(--muted); font-weight: 500; margin-bottom: 24px; display: flex; gap: 10px; flex-wrap: wrap; }
+    .modal-content { font-size: 0.92rem; color: var(--mid); line-height: 1.8; }
+    .modal-content p { margin-bottom: 14px; }
+    .modal-content a { color: var(--blue); }
+    .modal-content strong { color: var(--text); font-weight: 600; }
 
     /* ─── DISCOVER BANNER ─── */
     .discover-banner {
@@ -499,21 +552,23 @@
   <!-- Announcements panel -->
   <div class="ann-panel">
     <h2>Announcements</h2>
-    <a class="ann-card" href="https://macbhss.wixstudio.com/my-site-1/post/bhss-elections-campaign-materials" target="_blank">
-      <img src="https://static.wixstatic.com/media/9b835e_fc1985c410214574bc81b88627a23197~mv2.png/v1/fill/w_474,h_267,fp_0.50_0.50,q_95,enc_avif,quality_auto/9b835e_fc1985c410214574bc81b88627a23197~mv2.webp" alt="BHSS Elections" />
-      <div class="ann-card-body">
-        <div class="ann-card-meta">1 day ago</div>
-        <div class="ann-card-title">BHSS Elections Campaign Materials</div>
-      </div>
-    </a>
-    <a class="ann-card" href="https://macbhss.wixstudio.com/my-site-1/post/Welcome-to-the-new-bhss-website" target="_blank">
-      <img src="https://static.wixstatic.com/media/9b835e_57071cbc9af74ef08ba5fbb685ac7578~mv2.png/v1/fill/w_474,h_267,fp_0.50_0.50,q_95,enc_avif,quality_auto/9b835e_57071cbc9af74ef08ba5fbb685ac7578~mv2.webp" alt="New BHSS website" />
-      <div class="ann-card-body">
-        <div class="ann-card-meta">1 day ago</div>
-        <div class="ann-card-title">Welcome to the new BHSS website!</div>
-      </div>
-    </a>
+    <div id="annPanelCards"></div>
     <a class="ann-viewall" href="announcements.html">View All Announcements</a>
+  </div>
+</div>
+
+<!-- Post modal -->
+<div class="modal-backdrop" id="modalBackdrop" role="dialog" aria-modal="true">
+  <div class="modal" id="modal">
+    <div class="modal-hero" id="modalHero">
+      <button class="modal-close" id="modalClose" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-cat-pill" id="modalCat"></div>
+      <h2 id="modalTitle"></h2>
+      <div class="modal-meta" id="modalMeta"></div>
+      <div class="modal-content" id="modalContent"></div>
+    </div>
   </div>
 </div>
 
@@ -640,6 +695,91 @@ document.getElementById('igNextBtn').addEventListener('click', () => {
   igCarousel.scrollBy({ left: w * 2, behavior: 'smooth' });
 });
 
+</script>
+<script src="announcements-data.js"></script>
+<script>
+// ── Home page announcements panel ──
+(function () {
+  function loadAnnouncements() {
+    const base = window.BHSS_ANNOUNCEMENTS || [];
+    let local = [];
+    try { local = JSON.parse(localStorage.getItem('bhss_announcements') || '[]'); } catch (e) {}
+    const merged = [...base];
+    local.forEach(item => {
+      if (!merged.find(a => a.id === item.id)) merged.push(item);
+    });
+    return merged.sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+
+  function formatDate(str) {
+    const d = new Date(str + 'T00:00:00');
+    return d.toLocaleDateString('en-CA', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+
+  function openModal(ann) {
+    const backdrop = document.getElementById('modalBackdrop');
+    const hero = document.getElementById('modalHero');
+    document.getElementById('modalCat').textContent = ann.category;
+    document.getElementById('modalCat').className = `modal-cat-pill ${ann.category}`;
+    document.getElementById('modalTitle').textContent = ann.title;
+    document.getElementById('modalMeta').innerHTML = `
+      <span>${ann.author}</span>
+      <span>·</span>
+      <span>${formatDate(ann.date)}</span>
+      <span>·</span>
+      <span>${ann.readTime} min read</span>
+      <span>·</span>
+      <span>${ann.views || 0} views</span>
+    `;
+    document.getElementById('modalContent').innerHTML = ann.body;
+
+    const closeBtn = hero.querySelector('.modal-close');
+    hero.innerHTML = '';
+    hero.appendChild(closeBtn);
+    if (ann.image) {
+      const img = document.createElement('img');
+      img.src = ann.image;
+      img.alt = ann.title;
+      hero.insertBefore(img, closeBtn);
+    } else {
+      const ph = document.createElement('div');
+      ph.className = `modal-hero-placeholder ${ann.category}`;
+      ph.innerHTML = `<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
+      hero.insertBefore(ph, closeBtn);
+    }
+    backdrop.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('modal').scrollTop = 0;
+  }
+
+  function closeModal() {
+    document.getElementById('modalBackdrop').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalBackdrop').addEventListener('click', e => {
+    if (e.target === e.currentTarget) closeModal();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  // Render the top 2 announcements into the panel
+  const announcements = loadAnnouncements();
+  const container = document.getElementById('annPanelCards');
+  announcements.slice(0, 2).forEach(ann => {
+    const card = document.createElement('div');
+    card.className = 'ann-card';
+    card.innerHTML = ann.image
+      ? `<img src="${ann.image}" alt="${ann.title}" />`
+      : `<div style="height:130px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;opacity:0.4"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>`;
+    card.innerHTML += `<div class="ann-card-body">
+      <div class="ann-card-meta">${formatDate(ann.date)}</div>
+      <div class="ann-card-title">${ann.title}</div>
+    </div>`;
+    card.addEventListener('click', () => openModal(ann));
+    container.appendChild(card);
+  });
+})();
 </script>
 <script src="mobile-nav.js"></script>
 </body>
